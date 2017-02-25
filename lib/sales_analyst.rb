@@ -37,16 +37,9 @@ class SalesAnalyst
   end
 
   def average_average_price_per_merchant
-    all_averages = []
-    # find all averages of all merchants using ^^
-    se.merchants.all.each do |merchant|
-      all_averages << average_item_price_for_merchant(merchant.id)
+    total = se.merchants.all.reduce(0) do |sum, merchant|
+      sum += average_item_price_for_merchant(merchant.id)
     end
-    total = all_averages.reduce(:+)
-    # sum all averages
-    # find average price by dividing by number of merchants
     total / se.merchants.all.count
-    # should return big D
   end
-
 end
