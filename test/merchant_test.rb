@@ -2,7 +2,7 @@ require 'minitest/autorun'
 require 'minitest/emoji'
 require 'mocha/mini_test'
 require 'minitest/unit'
-require './black_thursday/lib/sales_engine'
+require_relative './../lib/sales_engine'
 
 class MerchantTest < Minitest::Test
 
@@ -10,8 +10,8 @@ class MerchantTest < Minitest::Test
 
   def setup
     @se = SalesEngine.from_csv({
-                                 :items     => "./black_thursday/data/items.csv",
-                                 :merchants => "./black_thursday/data/merchants.csv",
+                                 :items     => "./data/items.csv",
+                                 :merchants => "./data/merchants.csv",
     })
   end
 
@@ -29,5 +29,8 @@ class MerchantTest < Minitest::Test
 
   def test_items_returns_merchants_items
     assert_equal 3, se.merchants.all.first.items.length
+  end
+
+  def test_
   end
 end
