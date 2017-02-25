@@ -33,14 +33,14 @@ class SalesAnalyst
     total = merchant.items.reduce(0) do |sum, item|
       sum += item.unit_price
     end
-    total / merchant.items.count
+    (total / merchant.items.count).round(2)
   end
 
   def average_average_price_per_merchant
     total = se.merchants.all.reduce(0) do |sum, merchant|
       sum += average_item_price_for_merchant(merchant.id)
     end
-    total / se.merchants.all.count
+    (total / se.merchants.all.count).round(2)
   end
 
   def golden_items
