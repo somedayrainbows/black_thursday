@@ -7,7 +7,7 @@ class InvoiceRepositoryTest < Minitest::Test
   attr_reader :se
 
   def setup
-   @se = SalesEngine.from_csv({:items => "./data/items.csv", :merchants => "./data/merchants.csv", :invoices => "./test/fixtures/invoices_truncated.csv"})
+    @se = SalesEngine.from_csv({:items => "./data/items.csv", :merchants => "./data/merchants.csv", :invoices => "./test/fixtures/invoices_truncated.csv"})
 
   end
 
@@ -27,19 +27,19 @@ class InvoiceRepositoryTest < Minitest::Test
   end
 
   def test_it_finds_all_by_customer_id
-
     assert_equal 8, se.invoices.find_all_by_customer_id(1).count
     assert_instance_of Invoice, se.invoices.find_all_by_customer_id(1).first
   end
 
   def test_it_finds_all_by_merchant_id
-skip
-#returns either [] or one or more matches which have a matching merchant ID
+    assert_equal 2, se.invoices.find_all_by_merchant_id(12335955).count
+    assert_equal [], se.invoices.find_all_by_merchant_id(-1)
+    #returns either [] or one or more matches which have a matching merchant ID
   end
 
   def test_it_finds_all_by_status
-skip
-# returns either [] or one or more matches which have a matching status
+    skip
+    # returns either [] or one or more matches which have a matching status
   end
 
 end
