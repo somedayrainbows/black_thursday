@@ -4,7 +4,6 @@ require_relative './repository_methods'
 require 'pry'
 
 class ItemRepository
-
   attr_accessor :collection, :child
 
   def initialize(path, sales_engine)
