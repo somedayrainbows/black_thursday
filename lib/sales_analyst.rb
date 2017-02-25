@@ -42,4 +42,21 @@ class SalesAnalyst
     end
     total / se.merchants.all.count
   end
+
+  def golden_items
+    total = se.items.all.reduce(0) do |sum, item|
+      sum += item.unit_price
+    end
+    average_item_price = total / se.items.all.count
+
+    # Refactor, test separately, test for inclusion of averge_item_price
+    squared_diffs = se.items.all.map do |item|
+      (item.unit_price - average_item_price) ** 2
+    end.reduce(:+)
+    std_dev = Math.sqrt(squared_diffs / (se.items.all.count - 1)).round(2)
+
+    se.items.all.select do |item|
+      item.unit_price > (std_dev * 2) + average_item_price
+    end
+  end
 end

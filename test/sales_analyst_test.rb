@@ -37,4 +37,10 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 350.29, sa.average_average_price_per_merchant.to_f.round(2)
   end
 
+
+  def test_it_can_find_golden_items
+    assert_equal 5, sa.golden_items.count
+    assert_instance_of Item, sa.golden_items.sample
+  end
+
 end
