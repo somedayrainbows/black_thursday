@@ -34,7 +34,7 @@ class SalesAnalystTest < Minitest::Test
   end
 
   def test_it_identifies_average_item_price_per_merchant_average
-    assert_equal 75, sa.average_average_price_per_merchant
+    assert_equal 350.29, sa.average_average_price_per_merchant.to_f.round(2)
   end
 
 end
