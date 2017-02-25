@@ -34,11 +34,16 @@ class InvoiceRepositoryTest < Minitest::Test
   def test_it_finds_all_by_merchant_id
     assert_equal 2, se.invoices.find_all_by_merchant_id(12335955).count
     assert_equal [], se.invoices.find_all_by_merchant_id(-1)
+    assert_instance_of Invoice, se.invoices.find_all_by_merchant_id(12335955).first
     #returns either [] or one or more matches which have a matching merchant ID
   end
 
   def test_it_finds_all_by_status
-    skip
+    assert_equal 62, se.invoices.find_all_by_status("shipped").count
+    assert_equal 8, se.invoices.find_all_by_status("returned").count
+    assert_equal 29, se.invoices.find_all_by_status("pending").count
+    assert_instance_of Invoice, se.invoices.find_all_by_status("returned").first
+
     # returns either [] or one or more matches which have a matching status
   end
 
