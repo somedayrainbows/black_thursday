@@ -22,6 +22,14 @@ class SalesAnalyst
     std_dev = Math.sqrt(squared_diffs / (se.merchants.all.count - 1)).round(2)
   end
 
+  def standard_deviation(collection)
+    average = collection.reduce(:+) / collection.count
+    squared_diffs = collection.reduce(0) do |memo, entry|
+      memo += ((entry - average) ** 2)
+    end
+    std_dev = Math.sqrt(squared_diffs / (collection.count - 1)).round(2)
+  end
+
   def merchants_with_high_item_count
     se.merchants.all.select do |merchant|
       merchant.items.count > avg_items_per_merchant + avg_items_per_merchant_standard_deviation
@@ -58,5 +66,11 @@ class SalesAnalyst
     se.items.all.select do |item|
       item.unit_price > (std_dev * 2) + average_item_price
     end
+  end
+
+  def average_invoices_per_merchant
+    # count total number of invoices / total number of merchants
+
+    (se.invoices.all.count / se.merchants.all.count.to_f).round(2)
   end
 end

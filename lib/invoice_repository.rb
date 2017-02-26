@@ -14,5 +14,8 @@ class InvoiceRepository
 
   include RepositoryMethods
 
+  def inspect
+      "#<#{self.class} #{@collection.size} rows>"
+    end
 
 end
