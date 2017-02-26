@@ -113,21 +113,25 @@ class SalesAnalyst
     end
   end
 
+  def calculate_total_daily_entries(set)
+    set.reduce([]) do |memo, (day, count)|
+      memo << count
+      memo
+    end
 
+  end
 
+  def top_days_by_invoice_count
+    day_counts = calculate_total_daily_entries(find_entries_for_each_day(se.invoices.all))
+    average = find_average(day_counts)
+    std_dev = standard_deviation(day_counts)
 
-  #  .top_days_by_invoice_count
-  #  isolate created_at attr of invoices
-  #
-  #  iterate over invoices and find the count for each day
-  #  find how many invoices were created_at on each day of hte week
-  #  find std_dev of invoices
-  #  return array of days by name
+    days_threshold = average + std_dev
+
+    find_entries_for_each_day(se.invoices.all).reduce([]) do |top_days, (day, count)|
+      top_days << day if count > days_threshold
+      top_days
+    end
+  end
+
 end
-
-
-# Who are our lowest performing merchants?
-
-# Which merchants are more than two standard deviations below the mean?
-
-# sa.bottom_merchants_by_invoice_count # => [merchant, merchant, merchant]

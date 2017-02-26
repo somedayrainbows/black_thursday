@@ -80,4 +80,20 @@ class SalesAnalystTest < Minitest::Test
     set = se.invoices.all
     assert_equal 12, sa.find_entries_for_each_day(set)['Thursday']
   end
+
+  def test_it_can_create_an_array_of_total_entries_for_each_day
+    set = sa.find_entries_for_each_day(se.invoices.all)
+    assert_equal 7, sa.calculate_total_daily_entries(set).count
+  end
+
+  def test_it_can_find_the_standard_deviation_of_daily_entries
+    set = sa.calculate_total_daily_entries(sa.find_entries_for_each_day(se.invoices.all))
+    assert_equal 3.39, sa.standard_deviation(set)
+  end
+
+  def test_it_can_determine_days_of_week_with_most_sales
+
+    assert_equal ["Friday"], sa.top_days_by_invoice_count
+  end
+
 end
