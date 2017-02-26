@@ -14,12 +14,11 @@ class SalesAnalyst
   end
 
   def average_items_per_merchant_standard_deviation
-    avg = se.items.all.count.to_f / se.merchants.all.count.to_f
-
-    squared_diffs = se.merchants.all.map do |merchant|
-      (merchant.items.count - avg) ** 2
-    end.reduce(:+)
-    std_dev = Math.sqrt(squared_diffs / (se.merchants.all.count - 1)).round(2)
+    # build a collection (array) that contains the number of items per merchant
+    items_per_merchant = se.merchants.all.map do |merchant|
+      merchant.items.count
+    end
+    standard_deviation(items_per_merchant)
   end
 
   def standard_deviation(collection)
@@ -52,19 +51,14 @@ class SalesAnalyst
   end
 
   def golden_items
-    total = se.items.all.reduce(0) do |sum, item|
-      sum += item.unit_price
+    #refactor to abstract creating the average
+    all_items_unit_price = se.items.all.map do |item|
+      item.unit_price
     end
-    average_item_price = total / se.items.all.count
-
-    # Refactor, test separately, test for inclusion of averge_item_price
-    squared_diffs = se.items.all.map do |item|
-      (item.unit_price - average_item_price) ** 2
-    end.reduce(:+)
-    std_dev = Math.sqrt(squared_diffs / (se.items.all.count - 1)).round(2)
+    std_dev = standard_deviation(all_items_unit_price)
 
     se.items.all.select do |item|
-      item.unit_price > (std_dev * 2) + average_item_price
+      item.unit_price > (std_dev * 2) + (all_items_unit_price.reduce(:+) / all_items_unit_price.count)
     end
   end
 
