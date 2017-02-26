@@ -26,7 +26,7 @@ class SalesAnalyst
     squared_diffs = collection.reduce(0) do |memo, entry|
       memo += ((entry - average) ** 2)
     end
-    std_dev = Math.sqrt(squared_diffs / (collection.count - 1)).round(2)
+    std_dev = Math.sqrt(squared_diffs.to_f / (collection.count - 1)).round(2)
   end
 
   def merchants_with_high_item_count
@@ -67,4 +67,16 @@ class SalesAnalyst
 
     (se.invoices.all.count / se.merchants.all.count.to_f).round(2)
   end
+
+  def average_invoices_per_merchant_standard_deviation
+    # sa.average_invoices_per_merchant_standard_deviation # => 3.29
+    # pass a collection of the number of each merchant's invoices to std_dev
+    invoices_per_merchant = se.merchants.all.reduce([]) do |memo, merchant|
+      memo << merchant.invoices.count
+    end
+    standard_deviation(invoices_per_merchant)
+  end
 end
+# How many invoices does the average merchant have?
+
+# sa.average_invoices_per_merchant # => 10.49
