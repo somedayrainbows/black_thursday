@@ -20,7 +20,7 @@ class SalesAnalystTest < Minitest::Test
   end
 
   def test_average_items_per_merchant_standard_deviation
-    assert_equal 2.87, sa.average_items_per_merchant_standard_deviation
+    assert_equal 2.82, sa.average_items_per_merchant_standard_deviation
   end
 
   def test_it_identifies_whales
@@ -54,7 +54,12 @@ class SalesAnalystTest < Minitest::Test
   end
 
   def test_it_can_determine_the_standard_deviation_of_average_invoices_per_merchant
-    assert_equal 0.4, sa.average_invoices_per_merchant_standard_deviation
+    assert_equal 0.38, sa.average_invoices_per_merchant_standard_deviation
+  end
+
+  def test_it_can_find_top_merchants_by_invoice_count
+    assert_equal 12, sa.top_merchants_by_invoice_count.count
+    assert_instance_of Merchant, sa.top_merchants_by_invoice_count.first
   end
 
   def test_it_can_find_averages

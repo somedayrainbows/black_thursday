@@ -21,12 +21,12 @@ class SalesAnalyst
     standard_deviation(items_per_merchant)
   end
 
-  def standard_deviation(collection)
-    average = collection.reduce(:+) / collection.count
-    squared_diffs = collection.reduce(0) do |memo, entry|
+  def standard_deviation(set)
+    average = find_average(set)
+    squared_diffs = set.reduce(0) do |memo, entry|
       memo += ((entry - average) ** 2)
     end
-    std_dev = Math.sqrt(squared_diffs.to_f / (collection.count - 1)).round(2)
+    std_dev = Math.sqrt(squared_diffs.to_f / (set.count - 1)).round(2)
   end
 
   def merchants_with_high_item_count
@@ -63,7 +63,6 @@ class SalesAnalyst
   end
 
   def average_invoices_per_merchant
-    # count total number of invoices / total number of merchants
     s = se.merchants.all.map do |merchant|
       merchant.invoices.count
     end
@@ -73,8 +72,6 @@ class SalesAnalyst
 
 
   def average_invoices_per_merchant_standard_deviation
-    # sa.average_invoices_per_merchant_standard_deviation # => 3.29
-    # pass a collection of the number of each merchant's invoices to std_dev
     invoices_per_merchant = se.merchants.all.reduce([]) do |memo, merchant|
       memo << merchant.invoices.count
     end
@@ -84,7 +81,14 @@ class SalesAnalyst
   def find_average(set)
     (set.reduce(:+) / set.count.to_f).round(2)
   end
-end
-# How many invoices does the average merchant have?
 
-# sa.average_invoices_per_merchant # => 10.49
+  def top_merchants_by_invoice_count
+    set = se.merchants.all.map do |merchant|
+      merchant.invoices.count
+    end
+    whale_threshold = find_average(set) + (standard_deviation(set) * 2)
+    se.merchants.all.select do |merchant|
+      merchant.invoices.count > whale_threshold
+    end
+  end
+end
