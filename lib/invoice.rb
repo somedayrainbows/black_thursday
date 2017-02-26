@@ -12,6 +12,7 @@ class Invoice
     @updated_at = Date.strptime(params[:updated_at], "%m/%d/%Y")
   end
 
-
-
+  def merchant
+    se.merchants.find_by_id(merchant_id)
+  end
 end

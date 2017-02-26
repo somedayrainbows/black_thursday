@@ -6,9 +6,15 @@ require 'csv'
 
 
 class InvoiceTest < Minitest::Test
-  attr_reader :invoice
+  attr_reader :invoice, :se
 
   def setup
+    @se = SalesEngine.from_csv({
+                                 :items => "./data/items.csv",
+                                 :merchants => "./data/merchants.csv",
+                                 :invoices =>
+                                 './test/fixtures/invoices_truncated.csv'
+    })
     path = CSV.read('./test/fixtures/invoices_truncated.csv', headers: true, header_converters: :symbol).first
     @invoice = Invoice.new(path, nil)
   end
@@ -27,6 +33,11 @@ class InvoiceTest < Minitest::Test
     assert_equal "pending", invoice.status
     assert_equal Date.new(2009, 02, 07), invoice.created_at
     assert_equal Date.new(2014, 03, 15), invoice.updated_at
+  end
+
+  def test_it_can_find_its_merchant
+    invoice = se.invoices.find_by_id(20)
+    assert_instance_of Merchant, invoice.merchant
   end
 
 end
