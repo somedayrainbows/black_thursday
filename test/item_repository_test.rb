@@ -7,7 +7,7 @@ class ItemRepositoryTest < Minitest::Test
   attr_reader :se
 
   def setup
-    @se = SalesEngine.from_csv({:items => "./data/items.csv", :merchants => "./data/merchants.csv"})
+    @se = SalesEngine.from_csv({:items => "./test/fixtures/items_truncated.csv", :merchants => "./test/fixtures/merchants_truncated.csv"})
   end
 
   def test_it_returns_all_known_item_instances

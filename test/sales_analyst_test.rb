@@ -7,7 +7,7 @@ class SalesAnalystTest < Minitest::Test
   attr_reader :sa, :se
 
   def setup
-    @se = SalesEngine.from_csv({:items => "./data/items.csv", :merchants => "./data/merchants.csv"})
+    @se = SalesEngine.from_csv({:items => "./test/fixtures/items_truncated.csv", :merchants => "./test/fixtures/merchants_truncated.csv", :invoices => "./test/fixtures/invoices_truncated.csv"})
     @sa = SalesAnalyst.new(se)
   end
 
@@ -16,31 +16,36 @@ class SalesAnalystTest < Minitest::Test
   end
 
   def test_it_returns_average_items_per_merchant
-    assert_equal 2.88, sa.average_items_per_merchant
+    assert_equal 2.55, sa.average_items_per_merchant
   end
 
   def test_average_items_per_merchant_standard_deviation
-    assert_equal 3.26, sa.average_items_per_merchant_standard_deviation
+    assert_equal 2.82, sa.average_items_per_merchant_standard_deviation
   end
 
   def test_it_identifies_whales
-    assert_equal 52, sa.merchants_with_high_item_count.length
-    assert_includes sa.merchants_with_high_item_count, se.merchants.find_by_id(12334123)
+    assert_equal 10, sa.merchants_with_high_item_count.length
+
+    assert_includes sa.merchants_with_high_item_count, se.merchants.find_by_id(12334365)
   end
 
   def test_it_identifies_average_item_price_per_merchant
-    assert_instance_of BigDecimal, sa.average_item_price_for_merchant(12334123)
-    assert_equal 100.0, sa.average_item_price_for_merchant(12334123).to_f
+    assert_instance_of BigDecimal, sa.average_item_price_for_merchant(12334365)
+    assert_equal 42.99, sa.average_item_price_for_merchant(12334365).to_f
   end
 
   def test_it_identifies_average_item_price_per_merchant_average
-    assert_equal 350.29, sa.average_average_price_per_merchant.to_f.round(2)
+    assert_equal 2809174.15, sa.average_average_price_per_merchant.to_f.round(2)
   end
 
 
   def test_it_can_find_golden_items
-    assert_equal 5, sa.golden_items.count
+    assert_equal 1, sa.golden_items.count
     assert_instance_of Item, sa.golden_items.sample
+  end
+
+  def test_it_can_determine_the_number_of_average_invoices_per_merchant
+    assert_equal 1.11, sa.average_invoices_per_merchant
   end
 
 end

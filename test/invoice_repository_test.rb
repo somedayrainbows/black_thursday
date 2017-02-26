@@ -7,7 +7,7 @@ class InvoiceRepositoryTest < Minitest::Test
   attr_reader :se
 
   def setup
-    @se = SalesEngine.from_csv({:items => "./data/items.csv", :merchants => "./data/merchants.csv", :invoices => "./test/fixtures/invoices_truncated.csv"})
+    @se = SalesEngine.from_csv({:items => "./test/fixtures/items_truncated.csv", :merchants => "./test/fixtures/merchants_truncated.csv", :invoices => "./test/fixtures/invoices_truncated.csv"})
 
   end
 
