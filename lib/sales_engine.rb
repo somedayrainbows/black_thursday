@@ -6,7 +6,7 @@ require_relative './invoice_repository'
 class SalesEngine
 
   attr_reader :merchants, :items, :invoices
-
+# Refactor: Create repositories with a "build params hash" method that extracts headers and vals from CSV row
   def initialize(paths)
     @merchants = MerchantRepository.new(paths[:merchants], self)
     @items = ItemRepository.new(paths[:items], self)
