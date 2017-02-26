@@ -71,4 +71,13 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 2, sa.bottom_merchants_by_invoice_count.count
     assert_instance_of Merchant, sa.bottom_merchants_by_invoice_count.first
   end
+
+  def test_it_can_determine_the_day_an_entry_was_created
+    assert_equal "Thursday", sa.find_day(se.merchants.all.first)
+  end
+
+  def test_it_can_count_how_many_entries_were_built_on_each_day
+    set = se.invoices.all
+    assert_equal 12, sa.find_entries_for_each_day(set)['Thursday']
+  end
 end

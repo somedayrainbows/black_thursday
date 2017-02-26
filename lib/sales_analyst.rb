@@ -100,6 +100,29 @@ class SalesAnalyst
       merchant.invoices.count < guppy_threshold
     end
   end
+
+  def find_day(entry)
+    entry.created_at.strftime('%A')
+  end
+
+  def find_entries_for_each_day(set)
+    set.reduce(Hash.new(0)) do | day_hash, entry|
+      day = find_day(entry)
+      day_hash[day] += 1
+      day_hash
+    end
+  end
+
+
+
+
+  #  .top_days_by_invoice_count
+  #  isolate created_at attr of invoices
+  #
+  #  iterate over invoices and find the count for each day
+  #  find how many invoices were created_at on each day of hte week
+  #  find std_dev of invoices
+  #  return array of days by name
 end
 
 

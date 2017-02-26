@@ -1,6 +1,6 @@
 class Merchant
 
-  attr_reader :name, :id, :se
+  attr_reader :name, :id, :created_at, :updated_at, :se
 
   def initialize(params, sales_engine)
     @se = sales_engine
