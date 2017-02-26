@@ -58,15 +58,19 @@ class SalesAnalyst
     std_dev = standard_deviation(all_items_unit_price)
 
     se.items.all.select do |item|
-      item.unit_price > (std_dev * 2) + (all_items_unit_price.reduce(:+) / all_items_unit_price.count)
+      item.unit_price > (std_dev * 2) + find_average(all_items_unit_price)
     end
   end
 
   def average_invoices_per_merchant
     # count total number of invoices / total number of merchants
-
-    (se.invoices.all.count / se.merchants.all.count.to_f).round(2)
+    s = se.merchants.all.map do |merchant|
+      merchant.invoices.count
+    end
+    find_average(s)
   end
+
+
 
   def average_invoices_per_merchant_standard_deviation
     # sa.average_invoices_per_merchant_standard_deviation # => 3.29
@@ -75,6 +79,10 @@ class SalesAnalyst
       memo << merchant.invoices.count
     end
     standard_deviation(invoices_per_merchant)
+  end
+
+  def find_average(set)
+    (set.reduce(:+) / set.count.to_f).round(2)
   end
 end
 # How many invoices does the average merchant have?

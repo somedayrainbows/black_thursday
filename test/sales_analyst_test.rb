@@ -57,4 +57,9 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 0.4, sa.average_invoices_per_merchant_standard_deviation
   end
 
+  def test_it_can_find_averages
+    ary = [1,5,9]
+    assert_equal 5, sa.find_average(ary)
+  end
+
 end
