@@ -67,4 +67,8 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 5, sa.find_average(ary)
   end
 
+  def test_it_can_find_bottom_merchants_by_invoice_count
+    assert_equal 2, sa.bottom_merchants_by_invoice_count.count
+    assert_instance_of Merchant, sa.bottom_merchants_by_invoice_count.first
+  end
 end

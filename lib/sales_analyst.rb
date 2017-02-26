@@ -9,6 +9,7 @@ class SalesAnalyst
     @avg_items_per_merchant_standard_deviation = average_items_per_merchant_standard_deviation
   end
 
+  # Refactor simple count references
   def average_items_per_merchant
     (se.items.all.count.to_f / se.merchants.all.count.to_f).round(2)
   end
@@ -69,8 +70,6 @@ class SalesAnalyst
     find_average(s)
   end
 
-
-
   def average_invoices_per_merchant_standard_deviation
     invoices_per_merchant = se.merchants.all.reduce([]) do |memo, merchant|
       memo << merchant.invoices.count
@@ -91,4 +90,21 @@ class SalesAnalyst
       merchant.invoices.count > whale_threshold
     end
   end
+
+  def bottom_merchants_by_invoice_count
+    set = se.merchants.all.map do |merchant|
+      merchant.invoices.count
+    end
+    guppy_threshold = find_average(set) - (standard_deviation(set) * 2)
+    se.merchants.all.select do |merchant|
+      merchant.invoices.count < guppy_threshold
+    end
+  end
 end
+
+
+# Who are our lowest performing merchants?
+
+# Which merchants are more than two standard deviations below the mean?
+
+# sa.bottom_merchants_by_invoice_count # => [merchant, merchant, merchant]
