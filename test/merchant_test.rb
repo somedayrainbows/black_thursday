@@ -12,6 +12,7 @@ class MerchantTest < Minitest::Test
     @se = SalesEngine.from_csv({
                                  :items     => "./data/items.csv",
                                  :merchants => "./data/merchants.csv",
+                                 :invoices => "./test/fixtures/invoices_truncated.csv"
     })
   end
 
@@ -19,18 +20,13 @@ class MerchantTest < Minitest::Test
     assert se
   end
 
-  def test_it_knows_its_items
-    skip
-    item1 = mock("item")
-    item2 = mock("Item")
-    se.add_items([item1, item2])
-    assert_include
-  end
-
   def test_items_returns_merchants_items
     assert_equal 3, se.merchants.all.first.items.length
   end
 
-  def test_
+  def test_it_can_find_its_invoices
+    merchant = se.merchants.find_by_id(12335938)
+    assert_equal 1, merchant.invoices.count
+
   end
 end

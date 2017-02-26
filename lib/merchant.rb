@@ -1,14 +1,18 @@
 class Merchant
 
-  attr_reader :name, :id, :sales_engine
+  attr_reader :name, :id, :se
 
   def initialize(params, sales_engine)
     @name = params[:name]
     @id = params[:id].to_i
-    @sales_engine = sales_engine
+    @se = sales_engine
   end
 
   def items
-    sales_engine.items.find_all_by_merchant_id(id)
+    se.items.find_all_by_merchant_id(id)
+  end
+
+  def invoices
+    se.invoices.find_all_by_merchant_id(id)
   end
 end

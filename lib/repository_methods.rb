@@ -50,9 +50,9 @@ module RepositoryMethods
   end
 
   def find_all_by_status(status)
-    collection.reduce([]) do |invoice_matches, (id, entry)|
-      invoice_matches << entry if entry.status == status
-      invoice_matches
+    collection.reduce([]) do |status_matches, (id, entry)|
+      status_matches << entry if entry.status == status
+      status_matches
     end
   end
 
