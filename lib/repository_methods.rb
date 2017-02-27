@@ -1,5 +1,6 @@
 # refactor: move the csv reading into sales engine
 require 'pry'
+
 module RepositoryMethods
   def populate_repository(path, sales_engine)
     data = CSV.read(path, headers: true, header_converters: :symbol)
@@ -26,7 +27,6 @@ module RepositoryMethods
   end
 
   def find_all_by_name(name_fragment)
-
     collection.reduce([]) do |all_matches, (id, entry)|
       all_matches << entry if entry.name.downcase.include?(name_fragment.downcase)
       all_matches
@@ -42,7 +42,6 @@ module RepositoryMethods
   end
 
   def find_all_by_customer_id(customer_id)
-
     collection.reduce([]) do |customer_id_matches, (id, entry)|
       customer_id_matches << entry if entry.customer_id == customer_id
       customer_id_matches
