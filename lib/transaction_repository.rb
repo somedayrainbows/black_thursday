@@ -1,14 +1,11 @@
-require 'csv'
-require_relative './merchant'
 require_relative './repository_methods'
 
-class MerchantRepository
-
+class TransactionRepository
   attr_accessor :collection, :child
 
   def initialize(path, sales_engine)
+    @child = Invoice
     @collection = Hash.new
-    @child = Merchant
     populate_repository(path, sales_engine)
   end
 

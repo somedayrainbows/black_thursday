@@ -39,10 +39,10 @@ class InvoiceRepositoryTest < Minitest::Test
   end
 
   def test_it_finds_all_by_status
-    assert_equal 62, se.invoices.find_all_by_status("shipped").count
-    assert_equal 8, se.invoices.find_all_by_status("returned").count
-    assert_equal 29, se.invoices.find_all_by_status("pending").count
-    assert_instance_of Invoice, se.invoices.find_all_by_status("returned").first
+    assert_equal 62, se.invoices.find_all_by_status(:shipped).count
+    assert_equal 8, se.invoices.find_all_by_status(:returned).count
+    assert_equal 29, se.invoices.find_all_by_status(:pending).count
+    assert_instance_of Invoice, se.invoices.find_all_by_status(:returned).first
 
     # returns either [] or one or more matches which have a matching status
   end

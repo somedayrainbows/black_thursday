@@ -9,13 +9,12 @@ class InvoiceRepository
     @child = Invoice
     @collection = Hash.new
     populate_repository(path, sales_engine)
-
   end
 
   include RepositoryMethods
 
   def inspect
-      "#<#{self.class} #{@collection.size} rows>"
-    end
+    "#<#{self.class} #{@collection.size} rows>"
+  end
 
 end
