@@ -50,7 +50,7 @@ class SalesAnalystTest < Minitest::Test
 
   def test_it_can_calculate_standard_deviation
     collection = se.items.all.map { |item| item.unit_price }
-    assert_equal 16593068.75, sa.standard_deviation(collection)
+    assert_equal 16593068.75, sa.find_standard_deviation(collection)
   end
 
   def test_it_can_determine_the_standard_deviation_of_average_invoices_per_merchant
@@ -88,12 +88,17 @@ class SalesAnalystTest < Minitest::Test
 
   def test_it_can_find_the_standard_deviation_of_daily_entries
     set = sa.calculate_total_daily_entries(sa.find_entries_for_each_day(se.invoices.all))
-    assert_equal 3.39, sa.standard_deviation(set)
+    assert_equal 3.39, sa.find_standard_deviation(set)
   end
 
   def test_it_can_determine_days_of_week_with_most_sales
-
     assert_equal ["Friday"], sa.top_days_by_invoice_count
+  end
+
+  def test_it_can_determine_percentage_of_invoices_by_status
+    assert_equal 29.55, sa.invoice_status(:pending)
+    assert_equal 56.95, sa.invoice_status(:shipped)
+    assert_equal 13.5, sa.invoice_status(:returned)
   end
 
 end

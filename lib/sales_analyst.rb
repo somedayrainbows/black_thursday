@@ -1,12 +1,12 @@
 require 'pry'
 
 class SalesAnalyst
-  attr_reader :se, :avg_items_per_merchant, :avg_items_per_merchant_find_standard_deviation
+  attr_reader :se, :avg_items_per_merchant, :avg_items_per_merchant_standard_deviation
 
   def initialize(sales_engine)
     @se = sales_engine
     @avg_items_per_merchant = average_items_per_merchant
-    @avg_items_per_merchant_find_standard_deviation = average_items_per_merchant_find_standard_deviation
+    @avg_items_per_merchant_standard_deviation = average_items_per_merchant_standard_deviation
   end
 
   # Refactor simple count references
@@ -14,8 +14,7 @@ class SalesAnalyst
     (se.items.all.count.to_f / se.merchants.all.count.to_f).round(2)
   end
 
-  def average_items_per_merchant_find_standard_deviation
-    # build a collection (array) that contains the number of items per merchant
+  def average_items_per_merchant_standard_deviation
     items_per_merchant = se.merchants.all.map do |merchant|
       merchant.items.count
     end
@@ -32,7 +31,7 @@ class SalesAnalyst
 
   def merchants_with_high_item_count
     se.merchants.all.select do |merchant|
-      merchant.items.count > avg_items_per_merchant + avg_items_per_merchant_find_standard_deviation
+      merchant.items.count > avg_items_per_merchant + avg_items_per_merchant_standard_deviation
     end
   end
 
@@ -70,7 +69,7 @@ class SalesAnalyst
     find_average(s)
   end
 
-  def average_invoices_per_merchant_find_standard_deviation
+  def average_invoices_per_merchant_standard_deviation
     invoices_per_merchant = se.merchants.all.reduce([]) do |memo, merchant|
       memo << merchant.invoices.count
     end
