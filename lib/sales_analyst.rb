@@ -129,4 +129,16 @@ class SalesAnalyst
     end
   end
 
+  def invoice_status(status)
+# create a hash of invoices with status as the key and % of that status (total invoices of that status / total invoices)
+
+se.invoices.all.reduce(Hash.new(0)) do | status_hash, entry|
+  status_hash[entry.status] += 1
+  status_hash
+    end
+    binding.pry
+    ''
+# hash.fetch(status) => integer of invoices with that status / se.invoices.all.count
+  end
+
 end
