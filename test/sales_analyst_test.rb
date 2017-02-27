@@ -96,9 +96,9 @@ class SalesAnalystTest < Minitest::Test
   end
 
   def test_it_can_determine_percentage_of_invoices_by_status
-    assert_equal 29.55, sa.invoice_status(:pending)
-    assert_equal 56.95, sa.invoice_status(:shipped)
-    assert_equal 13.5, sa.invoice_status(:returned)
+    assert_equal 29.29, sa.invoice_status(:pending)
+    assert_equal 62.63, sa.invoice_status(:shipped)
+    assert_equal 8.08, sa.invoice_status(:returned)
   end
 
 end
