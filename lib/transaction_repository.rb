@@ -3,8 +3,10 @@ require_relative 'class_methods'
 require_relative 'transaction'
 
 class TransactionRepository
+
   extend ClassMethods
   include RepositoryMethods
+
   attr_accessor :collection, :child
   def initialize(path, sales_engine)
     @child = Transaction
