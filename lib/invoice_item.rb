@@ -1,7 +1,6 @@
 require_relative 'class_methods'
-require 'date'
 require 'bigdecimal'
-require 'pry'
+require 'time'
 
 class InvoiceItem
 
@@ -10,6 +9,7 @@ class InvoiceItem
   attr_reader :id, :item_id, :invoice_id, :quantity, :unit_price, :created_at, :updated_at, :se
 
   def initialize(params, sales_engine)
+    params = InvoiceItem.read_csv(params).first if params.instance_of?(String)
     @se = sales_engine
     @id = params[:id].to_i
     @item_id = params[:item_id].to_i

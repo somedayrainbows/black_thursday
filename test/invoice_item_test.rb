@@ -1,18 +1,14 @@
 require_relative 'test_helper'
+require 'minitest/autorun'
 require_relative './../lib/invoice_item'
-require_relative './../lib/sales_engine'
-require 'time'
-require_relative './../lib/class_methods'
-
 class InvoiceItemTest < Minitest::Test
 
-  extend ClassMethods
 
   attr_reader :se, :invoice_item
 
   def setup
     @se = $sales_engine
-     @invoice_item = InvoiceItem.from_csv('./test/fixtures/invoice_items_truncated.csv')
+    @invoice_item = InvoiceItem.new('./test/fixtures/invoice_items_truncated.csv', nil)
   end
 
   def test_it_exists

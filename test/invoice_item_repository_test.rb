@@ -8,7 +8,7 @@ class InvoiceItemRepositoryTest < Minitest::Test
   def setup
     @se = $sales_engine
     @invoice_item_repository = InvoiceItemRepository.from_csv('./test/fixtures/invoice_items_truncated.csv')
-   end
+  end
 
   def test_it_exists
     assert_instance_of InvoiceItemRepository, invoice_item_repository

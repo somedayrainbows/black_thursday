@@ -2,7 +2,6 @@
 require 'pry'
 
 module RepositoryMethods
-
   def populate_repository(data, sales_engine)
     data.each do |row|
       collection[row[:id].to_sym] = child.new(row, sales_engine)
