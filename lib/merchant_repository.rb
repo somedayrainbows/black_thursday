@@ -1,6 +1,7 @@
 require 'csv'
-require_relative './merchant'
-require_relative './repository_methods'
+require_relative 'merchant'
+require_relative 'repository_methods'
+require_relative 'repository_class_methods'
 
 class MerchantRepository
 
@@ -13,6 +14,7 @@ class MerchantRepository
   end
 
   include RepositoryMethods
+  extend RepositoryClassMethods
 
   def inspect
     "#<#{self.class} #{@collection.size} rows>"

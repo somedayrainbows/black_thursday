@@ -3,10 +3,6 @@ require 'pry'
 
 module RepositoryMethods
 
-  def self.from_csv(csv_object, sales_engine = nil)
-    new(csv_object)
-  end
-
   def populate_repository(path, sales_engine)
     data = CSV.read(path, headers: true, header_converters: :symbol)
     data.each do |row|
