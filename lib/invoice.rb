@@ -1,5 +1,8 @@
 require 'date'
 class Invoice
+
+  extend ClassMethods
+  
   attr_reader :id, :customer_id, :merchant_id, :status, :created_at, :updated_at, :se
 
   def initialize(params, sales_engine)

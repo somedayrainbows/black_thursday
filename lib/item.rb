@@ -4,6 +4,8 @@ require 'pry'
 
 class Item
 
+  extend ClassMethods
+
   attr_reader :name, :id, :description, :unit_price, :created_at, :updated_at, :merchant_id, :se
 
   def initialize(params, sales_engine)

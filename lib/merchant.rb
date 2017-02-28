@@ -1,5 +1,7 @@
 class Merchant
 
+  extend ClassMethods
+  
   attr_reader :name, :id, :created_at, :updated_at, :se
 
   def initialize(params, sales_engine)
