@@ -21,7 +21,7 @@ class MerchantTest < Minitest::Test
   end
 
   def test_items_returns_merchants_items
-    assert_equal 3, se.merchants.all.first.items.length
+    assert_equal 9, se.merchants.all.first.items.length
   end
 
   def test_it_can_find_its_invoices

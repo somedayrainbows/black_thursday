@@ -7,7 +7,6 @@ class InvoiceItemTest < Minitest::Test
   attr_reader :se, :invoice_item
 
   def setup
-    # @se = $sales_engine
     @invoice_item = InvoiceItem.new('./test/fixtures/invoice_items_truncated.csv', nil)
   end
 

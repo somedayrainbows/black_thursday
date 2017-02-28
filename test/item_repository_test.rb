@@ -8,7 +8,7 @@ class ItemRepositoryTest < Minitest::Test
   end
 
   def test_it_returns_all_known_item_instances
-    assert_equal 665, se.items.all.length
+    assert_equal 227, se.items.all.length
   end
 
   def test_it_finds_an_item_by_id

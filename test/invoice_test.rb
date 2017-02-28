@@ -29,9 +29,9 @@ class InvoiceTest < Minitest::Test
   end
 
   def test_it_knows_its_details
-    assert_equal "pending", invoice.status
-    assert_equal Date.new(2009, 02, 07), invoice.created_at
-    assert_equal Date.new(2014, 03, 15), invoice.updated_at
+    assert_equal :pending, invoice.status
+    assert_equal Time.new(2009, 02, 07), invoice.created_at
+    assert_equal Time.new(2014, 03, 15), invoice.updated_at
   end
 
   def test_it_can_find_its_merchant
