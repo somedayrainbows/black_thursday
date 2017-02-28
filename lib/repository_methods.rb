@@ -32,6 +32,20 @@ module RepositoryMethods
     end
   end
 
+  def find_all_by_first_name(name_fragment)
+    collection.reduce([]) do |all_matches, (id, entry)|
+      all_matches << entry if entry.first_name.downcase.include?(name_fragment.downcase)
+      all_matches
+    end
+  end
+
+  def find_all_by_last_name(name_fragment)
+    collection.reduce([]) do |all_matches, (id, entry)|
+      all_matches << entry if entry.last_name.downcase.include?(name_fragment.downcase)
+      all_matches
+    end
+  end
+
   def find_all_by_merchant_id(merchant_id)
     entries_matching_merchant_id = []
     collection.each do |id, entry|
