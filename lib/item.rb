@@ -1,3 +1,4 @@
+require_relative 'class_methods'
 require 'bigdecimal'
 require 'time'
 require 'pry'

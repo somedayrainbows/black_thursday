@@ -3,8 +3,7 @@ require 'pry'
 
 module RepositoryMethods
 
-  def populate_repository(path, sales_engine)
-    data = CSV.read(path, headers: true, header_converters: :symbol)
+  def populate_repository(data, sales_engine)
     data.each do |row|
       collection[row[:id].to_sym] = child.new(row, sales_engine)
     end
