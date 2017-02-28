@@ -1,24 +1,49 @@
-require 'minitest/autorun'
-require 'minitest/pride'
+require_relative 'test_helper'
 require_relative './../lib/invoice_item'
 require_relative './../lib/sales_engine'
-
+require 'time'
+require_relative './../lib/class_methods'
 
 class InvoiceItemTest < Minitest::Test
+
+  extend ClassMethods
+
   attr_reader :se, :invoice_item
 
   def setup
-    @se = SalesEngine.from_csv({
-      :items     => "./test/fixtures/items_truncated.csv",
-      :merchants => "./test/fixtures/merchants_truncated.csv",
-      :invoices => "./test/fixtures/invoices_truncated.csv", :invoice_items => "./test/fixtures/invoice_items_truncated.csv"
-     })
-     path = CSV.read('./test/fixtures/invoice_items_truncated.csv', headers: true, header_converters: :symbol).first
-     @invoice_item = InvoiceItem.new(path, nil)
+    @se = $sales_engine
+     @invoice_item = InvoiceItem.from_csv('./test/fixtures/invoice_items_truncated.csv')
   end
 
   def test_it_exists
     assert_instance_of InvoiceItem, invoice_item
   end
 
+  def test_it_returns_the_invoice_item_id
+    assert_equal 1, invoice_item.id
+  end
+
+  def test_it_returns_the_invoice_item_id
+    assert_equal 263519844, invoice_item.item_id
+  end
+
+  def test_it_returns_the_invoice_item_id
+    assert_equal 1, invoice_item.invoice_id
+  end
+
+  def test_it_returns_the_quantity
+    assert_equal 5, invoice_item.quantity
+  end
+
+  def test_it_returns_the_date_created
+    assert_equal Time.parse("2012-03-27 14:54:09 UTC"), invoice_item.created_at
+  end
+
+  def test_it_returns_the_date_updated
+    assert_equal Time.parse("2012-03-27 14:54:09 UTC"), invoice_item.updated_at
+  end
+
+  def test_it_can_return_unit_price
+    assert_instance_of BigDecimal, invoice_item.unit_price_to_dollars
+  end
 end

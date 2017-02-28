@@ -1,16 +1,13 @@
-require 'minitest/autorun'
-require 'minitest/pride'
-require_relative './../lib/sales_engine'
 require_relative './../lib/invoice_item_repository'
 require 'csv'
+require_relative 'test_helper'
 
 class InvoiceItemRepositoryTest < Minitest::Test
   attr_reader :se, :invoice_item_repository
 
   def setup
-    @se = SalesEngine.from_csv({:items => "./test/fixtures/items_truncated.csv", :merchants => "./test/fixtures/merchants_truncated.csv", :invoices => "./test/fixtures/invoices_truncated.csv", :invoice_items => "./test/fixtures/invoice_items_truncated.csv"})
-    path = ('./test/fixtures/invoice_items_truncated.csv')
-    @invoice_item_repository = InvoiceItemRepository.new(path, nil)
+    @se = $sales_engine
+    @invoice_item_repository = InvoiceItemRepository.from_csv('./test/fixtures/invoice_items_truncated.csv')
    end
 
   def test_it_exists

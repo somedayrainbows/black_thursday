@@ -1,7 +1,7 @@
 require 'csv'
 require_relative 'item'
 require_relative 'repository_methods'
-require_relative 'repository_class_methods'
+require_relative 'class_methods'
 require 'pry'
 
 class ItemRepository
@@ -14,7 +14,7 @@ class ItemRepository
   end
 
   include RepositoryMethods
-  extend RepositoryClassMethods
+  extend ClassMethods
 
   def inspect
     "#<#{self.class} #{@collection.size} rows>"

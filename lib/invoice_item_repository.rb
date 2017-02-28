@@ -1,5 +1,6 @@
 require_relative './invoice_item'
 require_relative './repository_methods'
+require_relative 'class_methods'
 require 'pry'
 
 class InvoiceItemRepository
@@ -12,6 +13,7 @@ class InvoiceItemRepository
   end
 
   include RepositoryMethods
+  extend ClassMethods
 
   def inspect
     "#<#{self.class} #{@collection.size} rows>"
