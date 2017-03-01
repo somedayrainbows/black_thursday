@@ -1,12 +1,10 @@
 require_relative 'test_helper'
-require_relative './../lib/invoice'
 
 class InvoiceTest < Minitest::Test
-  attr_reader :invoice, :se
+  attr_reader :invoice
 
   def setup
-    @se = $sales_engine
-    @invoice = Invoice.new('./test/fixtures/invoices_truncated.csv', nil)
+    @invoice = Invoice.new('./test/fixtures/invoices_truncated.csv', $sales_engine)
   end
 
   def test_it_exists
@@ -26,16 +24,11 @@ class InvoiceTest < Minitest::Test
   end
 
   def test_it_can_find_its_merchant
-    invoice = se.invoices.find_by_id(20)
-
     assert_instance_of Merchant, invoice.merchant
   end
 
   def test_it_can_find_its_id_through_sales_engine
-    invoice = se.invoices.find_by_id(20)
-
     assert_instance_of Item, invoice.items.sample
-    # invoice.items => [item, item, item]
   end
 
 end

@@ -1,12 +1,11 @@
 require_relative 'test_helper'
-require_relative './../lib/invoice_item'
 
 class InvoiceItemTest < Minitest::Test
 
-  attr_reader :se, :invoice_item
+  attr_reader :invoice_item
 
   def setup
-    @invoice_item = InvoiceItem.new('./test/fixtures/invoice_items_truncated.csv', nil)
+    @invoice_item = InvoiceItem.new('./test/fixtures/invoice_items_truncated.csv', $sales_engine)
   end
 
   def test_it_exists

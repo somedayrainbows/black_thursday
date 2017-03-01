@@ -2,11 +2,10 @@ require_relative 'test_helper'
 
 class TransactionTest < Minitest::Test
 
-  attr_reader :se, :transaction
+  attr_reader :transaction
 
   def setup
-    @se = $sales_engine
-    @transaction = Transaction.new('./test/fixtures/transactions_truncated.csv', se)
+    @transaction = Transaction.new('./test/fixtures/transactions_truncated.csv', $sales_engine)
   end
 
   def test_its_a_transaction
@@ -27,6 +26,4 @@ class TransactionTest < Minitest::Test
     assert_instance_of Invoice, transaction.invoice
     assert_equal transaction.invoice_id, transaction.invoice.id
   end
-
-
 end

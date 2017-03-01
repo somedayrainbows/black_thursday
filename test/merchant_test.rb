@@ -1,13 +1,11 @@
 require_relative 'test_helper'
-require_relative './../lib/merchant'
 
 class MerchantTest < Minitest::Test
 
-  attr_reader :se, :merchant
+  attr_reader :merchant
 
   def setup
-      @se = $sales_engine
-      @merchant = Merchant.new('./test/fixtures/merchants_truncated.csv', se)
+      @merchant = Merchant.new('./test/fixtures/merchants_truncated.csv', $sales_engine)
   end
 
   def test_it_exists

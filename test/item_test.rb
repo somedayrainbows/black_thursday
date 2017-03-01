@@ -1,5 +1,4 @@
 require_relative 'test_helper'
-require_relative './../lib/item'
 
 class ItemTest < Minitest::Test
 
@@ -14,5 +13,4 @@ class ItemTest < Minitest::Test
     item = merchant.items.first
     assert_equal merchant, item.merchant
   end
-
 end

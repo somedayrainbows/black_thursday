@@ -1,12 +1,10 @@
 require_relative 'test_helper'
-require_relative './../lib/customer'
 
 class CustomerTest < Minitest::Test
-  attr_reader :se, :customer
+  attr_reader :customer
 
   def setup
-    @se = $sales_engine
-    @customer = Customer.new('./test/fixtures/customers_truncated.csv', se)
+    @customer = Customer.new('./test/fixtures/customers_truncated.csv', $sales_engine)
   end
 
   def test_it_exists
