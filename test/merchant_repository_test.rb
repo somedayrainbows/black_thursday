@@ -12,42 +12,25 @@ class MerchantRepositoryTest < Minitest::Test
     assert_instance_of MerchantRepository, merchant_repository
   end
 
-  def test_it_returns_all_known_merchant_instances
-    assert_equal 227, merchant_repository.all.length
+  def test_it_returns_all_known_merchants
+    assert_equal 89, merchant_repository.all.count
   end
 
   def test_it_finds_an_merchant_by_id
-    assert_instance_of Merchant, merchant_repository.find_by_id(263396209)
+    assert_instance_of Merchant, merchant_repository.find_by_id(12334861)
+
+    refute nil, merchant_repository.find_by_id(9823722)
   end
 
   def test_it_finds_an_merchant_by_name
-    assert_instance_of Merchant, merchant_repository.find_by_name("Vogue Paris Original Givenchy 2307")
+    assert_instance_of Merchant, merchant_repository.find_by_name("SamsMagicShop")
 
-    refute nil, merchant_repository.find_by_name("vogue")
+    refute nil, merchant_repository.find_by_name("magic")
   end
 
-  def test_it_finds_an_merchant_with_description_fragment
-    assert_equal [], merchant_repository.find_all_with_description("fast cars")
+  def test_it_finds_all_merchants_by_name
+    assert_equal 3, merchant_repository.find_all_by_name("the").count
 
-    assert_instance_of Merchant, merchant_repository.find_all_with_description("wizard").sample
+    assert_instance_of Merchant, merchant_repository.find_all_by_name("sam").sample
   end
-
-  def test_it_finds_all_merchants_by_supplied_price
-    assert_equal 12, merchant_repository.find_all_by_price(20).count
-
-    assert_instance_of Merchant, merchant_repository.find_all_by_price(20).sample
-  end
-
-  def test_it_finds_all_merchants_in_a_supplied_range
-    assert_equal 58, merchant_repository.find_all_by_price_in_range(15..25).count
-
-    assert_instance_of Merchant, merchant_repository.find_all_by_price_in_range(50..100).sample
-  end
-
-  def test_it_finds_all_merchants_by_merchant_id
-    assert_equal 3, merchant_repository.find_all_by_merchant_id(12334105).count
-
-    assert_instance_of Merchant, merchant_repository.find_all_by_merchant_id(12334105).sample
-  end
-
 end

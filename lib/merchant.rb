@@ -7,6 +7,7 @@ class Merchant
   attr_reader :name, :id, :created_at, :updated_at, :se
 
   def initialize(params, sales_engine)
+    params = Merchant.read_csv(params).first if params.instance_of?(String)
     @se = sales_engine
     @name = params[:name]
     @id = params[:id].to_i

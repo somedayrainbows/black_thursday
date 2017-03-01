@@ -2,7 +2,7 @@ require_relative 'test_helper'
 require_relative './../lib/customer'
 
 class CustomerTest < Minitest::Test
-  attr_reader :se, :customer
+  attr_reader :customer
 
   def setup
     @customer = Customer.new('./test/fixtures/customers_truncated.csv', nil)
