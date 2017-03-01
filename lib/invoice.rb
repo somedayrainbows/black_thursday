@@ -32,7 +32,7 @@ class Invoice
   def is_paid_in_full?
     transactions = se.transactions.find_all_by_invoice_id(id)
     return false if transactions.empty?
-    transactions.all? do |transaction|
+    transactions.any? do |transaction|
       transaction.result == 'success'
     end
   end

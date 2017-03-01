@@ -99,4 +99,8 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 8.08, sa.invoice_status(:returned)
   end
 
+  def test_return_customers_that_spent_the_most
+    assert_equal 5, sa.top_buyers(5).count
+    assert_instance_of Customer, sa.top_buyers(5).sample
+  end
 end
