@@ -4,10 +4,9 @@ require_relative './../lib/transaction_repository'
 
 class TransactionRepositoryTest < Minitest::Test
 
-  attr_reader :se, :transaction_repository
+  attr_reader :transaction_repository
 
   def setup
-    @se = $sales_engine
     @transaction_repository = TransactionRepository.from_csv('./test/fixtures/transactions_truncated.csv')
   end
 
