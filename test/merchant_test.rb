@@ -3,10 +3,11 @@ require_relative './../lib/merchant'
 
 class MerchantTest < Minitest::Test
 
-  attr_reader :merchant
+  attr_reader :se, :merchant
 
   def setup
-      @merchant = Merchant.new('./test/fixtures/merchants_truncated.csv', nil)
+      @se = $sales_engine
+      @merchant = Merchant.new('./test/fixtures/merchants_truncated.csv', se)
   end
 
   def test_it_exists
@@ -21,4 +22,8 @@ class MerchantTest < Minitest::Test
     assert_equal "2MAKERSMARKET", merchant.name
   end
 
+  def test_it_knows_its_customers
+    assert_equal 7, merchant.customers.count
+    assert_instance_of Customer, merchant.customers.sample
+  end
 end
