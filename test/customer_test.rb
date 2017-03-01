@@ -2,10 +2,11 @@ require_relative 'test_helper'
 require_relative './../lib/customer'
 
 class CustomerTest < Minitest::Test
-  attr_reader :customer
+  attr_reader :se, :customer
 
   def setup
-    @customer = Customer.new('./test/fixtures/customers_truncated.csv', nil)
+    @se = $sales_engine
+    @customer = Customer.new('./test/fixtures/customers_truncated.csv', se)
   end
 
   def test_it_exists
@@ -32,4 +33,8 @@ class CustomerTest < Minitest::Test
     assert_equal Time.parse("2012-03-27 14:54:09 UTC"), customer.created_at
   end
 
+  def test_it_knows_its_merchants
+    assert_equal 8, customer.merchants.size
+    assert_instance_of Merchant, customer.merchants.sample
+  end
 end
