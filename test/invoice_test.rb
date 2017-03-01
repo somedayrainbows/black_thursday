@@ -34,8 +34,8 @@ class InvoiceTest < Minitest::Test
   def test_it_can_verify_if_an_invoice_is_paid_in_full
     invoice2 = $sales_engine.invoices.find_by_id(21)
 
-    assert invoice.paid_in_full?
-    refute invoice2.paid_in_full?
+    assert invoice.is_paid_in_full?
+    refute invoice2.is_paid_in_full?
   end
 
   def test_it_can_report_the_total_of_an_invoice

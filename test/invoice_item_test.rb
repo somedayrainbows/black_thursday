@@ -29,7 +29,7 @@ class InvoiceItemTest < Minitest::Test
   end
 
   def test_it_returns_the_unit_price
-    assert_equal 13635, invoice_item.unit_price
+    assert_equal 136.35, invoice_item.unit_price
   end
 
   def test_it_returns_the_date_created
@@ -41,6 +41,6 @@ class InvoiceItemTest < Minitest::Test
   end
 
   def test_it_can_return_unit_price_in_dollars
-    assert_instance_of BigDecimal, invoice_item.unit_price_to_dollars
+    assert_instance_of BigDecimal, invoice_item.unit_price
   end
 end
