@@ -1,7 +1,4 @@
-require_relative 'class_methods'
-require_relative './invoice_item'
-require_relative './repository_methods'
-require 'pry'
+require_relative 'invoice_item'
 
 class InvoiceItemRepository
   attr_accessor :collection, :child

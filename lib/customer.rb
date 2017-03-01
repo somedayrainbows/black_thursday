@@ -1,6 +1,3 @@
-require_relative 'class_methods'
-require 'time'
-
 class Customer
 
   extend ClassMethods

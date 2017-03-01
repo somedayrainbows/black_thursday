@@ -1,8 +1,3 @@
-require_relative 'class_methods'
-require 'bigdecimal'
-require 'time'
-require 'pry'
-
 class Item
 
   extend ClassMethods
@@ -11,14 +6,15 @@ class Item
 
   def initialize(params, sales_engine)
     params = Item.read_csv(params).first if params.instance_of?(String)
-    @name = params[:name]
+
+    @se = sales_engine
     @id = params[:id].to_i
+    @name = params[:name]
     @description = params[:description]
     @unit_price = unit_price_to_dollars(params[:unit_price])
     @created_at = Time.parse(params[:created_at])
     @updated_at = Time.parse(params[:updated_at])
     @merchant_id = params[:merchant_id].to_i # test coverage for this
-    @se = sales_engine
   end
 
   def unit_price_to_dollars(price)

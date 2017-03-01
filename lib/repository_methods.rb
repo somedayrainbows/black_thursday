@@ -1,5 +1,4 @@
 # refactor: move the csv reading into sales engine
-require 'pry'
 
 module RepositoryMethods
   def populate_repository(data, sales_engine)

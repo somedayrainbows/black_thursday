@@ -1,5 +1,3 @@
-require 'pry'
-
 class SalesAnalyst
   attr_reader :se, :avg_items_per_merchant, :avg_items_per_merchant_standard_deviation
 

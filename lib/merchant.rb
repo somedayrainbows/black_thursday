@@ -1,5 +1,3 @@
-require_relative 'class_methods'
-
 class Merchant
 
   extend ClassMethods

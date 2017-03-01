@@ -1,8 +1,4 @@
-require 'csv'
 require_relative 'item'
-require_relative 'repository_methods'
-require_relative 'class_methods'
-require 'pry'
 
 class ItemRepository
   attr_accessor :collection, :child
@@ -19,5 +15,5 @@ class ItemRepository
   def inspect
     "#<#{self.class} #{@collection.size} rows>"
   end
-  
+
 end

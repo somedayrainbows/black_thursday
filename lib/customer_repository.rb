@@ -1,7 +1,4 @@
-require_relative 'class_methods'
-require_relative './customer'
-require_relative './repository_methods'
-require 'pry'
+require_relative 'customer'
 
 class CustomerRepository
   attr_accessor :collection, :child

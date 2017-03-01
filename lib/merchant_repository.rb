@@ -1,7 +1,4 @@
-require 'csv'
 require_relative 'merchant'
-require_relative 'repository_methods'
-require_relative 'class_methods'
 
 class MerchantRepository
 

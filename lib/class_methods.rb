@@ -1,4 +1,3 @@
-require 'CSV'
 module ClassMethods
   def from_csv(path, sales_engine = nil)
     new(read_csv(path), sales_engine)

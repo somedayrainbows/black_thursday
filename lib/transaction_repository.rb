@@ -1,5 +1,3 @@
-require_relative 'repository_methods'
-require_relative 'class_methods'
 require_relative 'transaction'
 
 class TransactionRepository
