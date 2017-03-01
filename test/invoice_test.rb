@@ -39,6 +39,6 @@ class InvoiceTest < Minitest::Test
   end
 
   def test_it_can_report_the_total_of_an_invoice
-    assert_equal 25, invoice.total
+    assert_equal 21067.77, invoice.total
   end
 end
