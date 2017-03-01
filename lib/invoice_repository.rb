@@ -1,6 +1,10 @@
 require_relative 'invoice'
 
 class InvoiceRepository
+
+  include RepositoryMethods
+  extend ClassMethods
+
   attr_accessor :collection, :child
 
   def initialize(path, sales_engine)
@@ -9,8 +13,6 @@ class InvoiceRepository
     populate_repository(path, sales_engine)
   end
 
-  include RepositoryMethods
-  extend ClassMethods
 
   def inspect
     "#<#{self.class} #{@collection.size} rows>"

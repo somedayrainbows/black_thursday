@@ -5,7 +5,6 @@ class SalesEngine
   extend ClassMethods
 
   attr_reader :merchants, :items, :invoices, :invoice_items, :customers, :transactions
-# Refactor: Create repositories with a "build params hash" method that extracts headers and vals from CSV row
   def initialize(paths)
     @merchants = MerchantRepository.from_csv(paths[:merchants], self)
     @items = ItemRepository.from_csv(paths[:items], self)
