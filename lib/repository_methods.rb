@@ -38,4 +38,39 @@ module RepositoryMethods
     end
     entries_matching_merchant_id
   end
+
+  def find_all_by_customer_id(customer_id)
+    collection.reduce([]) do |customer_id_matches, (id, entry)|
+      customer_id_matches << entry if entry.customer_id == customer_id
+      customer_id_matches
+    end
+  end
+
+  def find_all_by_credit_card_number(credit_card_number)
+    collection.select do |entry|
+      entry.credit_card_number == credit_card_number
+    end
+  end
+
+  def find_all_by_item_id(item_id)
+    collection.reduce([]) do |item_id_matches, (id, entry)|
+      item_id_matches << entry if entry.item_id == item_id
+      item_id_matches
+    end
+  end
+
+  def find_all_by_invoice_id(invoice_id)
+    collection.reduce([]) do |invoice_id_matches, (id, entry)|
+      invoice_id_matches << entry if entry.invoice_id == invoice_id
+      invoice_id_matches
+    end
+  end
+
+  def find_all_by_status(status)
+    collection.reduce([]) do |status_matches, (id, entry)|
+      status_matches << entry if entry.status == status
+      status_matches
+    end
+  end
+
 end
