@@ -17,12 +17,17 @@ class TransactionRepositoryTest < Minitest::Test
   end
 
   def test_it_can_find_all_by_invoice_id
-    transactions = transaction_repository.find_all_by_invoice_id(2179)
-    assert_equal 2, transactions.count
+    transactions = transaction_repository.find_all_by_invoice_id(10)
+    assert_equal 3, transactions.count
     assert_instance_of Transaction, transactions.sample
+    assert_equal 10, transactions.sample.invoice_id
   end
 
-  def test_it_can_find_all_by_invoice_id
+  def test_it_can_find_all_by_credit_card_number
+    transactions = transaction_repository.find_all_by_credit_card_number(4618812783101067)
+    assert_equal 7, transactions.count
+    assert_instance_of Transaction, transactions.sample
+    assert_equal 4618812783101067, transactions.sample.credit_card_number
   end
 end
 

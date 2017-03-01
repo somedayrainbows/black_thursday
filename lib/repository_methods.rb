@@ -101,6 +101,13 @@ module RepositoryMethods
     end
   end
 
+  def find_all_by_credit_card_number(credit_card_number)
+    collection.reduce([]) do |matches, (id, entry)|
+      matches << entry if entry.credit_card_number == credit_card_number
+      matches
+    end
+  end
+
   def find_all_by_status(status)
     collection.reduce([]) do |status_matches, (id, entry)|
       status_matches << entry if entry.status == status
