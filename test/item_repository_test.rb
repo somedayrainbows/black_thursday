@@ -13,7 +13,7 @@ class ItemRepositoryTest < Minitest::Test
   end
 
   def test_it_returns_all_known_item_instances
-    assert_equal 227, item_repository.all.count
+    assert_equal 232, item_repository.all.count
   end
 
   def test_it_finds_an_item_by_id

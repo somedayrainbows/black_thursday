@@ -28,7 +28,7 @@ class InvoiceTest < Minitest::Test
   end
 
   def test_it_returns_an_array_of_related_item_objects
-    assert_instance_of Item, invoice.items.sample
+    assert_instance_of Item, invoice.items.first
   end
 
   def test_it_can_verify_if_an_invoice_is_paid_in_full
