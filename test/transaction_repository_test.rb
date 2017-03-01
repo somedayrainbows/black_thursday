@@ -13,7 +13,7 @@ class TransactionRepositoryTest < Minitest::Test
 
   def test_it_can_find_a_transaction_from_a_transaction_id
     transaction = transaction_repository.all.first
-    assert_equal transaction_repository.find_by_id(1), transaction
+    assert_equal transaction_repository.find_by_id(2650), transaction
   end
 
   def test_it_can_find_all_by_invoice_id
