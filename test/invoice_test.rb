@@ -37,4 +37,8 @@ class InvoiceTest < Minitest::Test
     assert invoice.paid_in_full?
     refute invoice2.paid_in_full?
   end
+
+  def test_it_can_report_the_total_of_an_invoice
+    assert_equal 25, invoice.total
+  end
 end

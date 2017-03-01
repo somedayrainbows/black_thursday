@@ -26,17 +26,21 @@ class Invoice
     end
     item_ids
     se.items.all.reduce([]) do |item_objects, item|
-    item_objects << item if item_ids.include?(item.id)
+      item_objects << item if item_ids.include?(item.id)
       item_objects
     end
   end
 
   def paid_in_full?
-    # if transactions.result == success
-    # find invoice_id in transactions
     transactions = se.transactions.find_all_by_invoice_id(id)
     transactions.all? do |transaction|
       transaction.result == 'success'
+    end
+  end
+
+  def total
+    se.invoice_items.find_all_by_invoice_id(id).reduce(0) do |total, invoice_item|
+      total += invoice_item.unit_price * invoice_item.quantity
     end
   end
 end
