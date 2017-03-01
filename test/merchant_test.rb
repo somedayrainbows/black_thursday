@@ -23,7 +23,7 @@ class MerchantTest < Minitest::Test
   end
 
   def test_it_knows_its_customers
-    assert_equal 7, merchant.customers.count
+    assert_equal 1, merchant.customers.count
     assert_instance_of Customer, merchant.customers.sample
   end
 end

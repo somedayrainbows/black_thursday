@@ -22,4 +22,16 @@ class Merchant
   def invoices
     se.invoices.find_all_by_merchant_id(id)
   end
+
+  def customers
+    common_invoices = se.invoices.find_all_by_merchant_id(id)
+    customer_ids = common_invoices.reduce([]) do |uniq_customer_ids, invoice|
+      uniq_customer_ids << invoice.customer_id unless uniq_customer_ids.include?(invoice.customer_id)
+      uniq_customer_ids
+    end
+    customer_ids.map do |customer_id|
+      se.customers.find_by_id(customer_id)
+    end
+  end
 end
+
