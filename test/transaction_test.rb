@@ -24,10 +24,10 @@ class TransactionTest < Minitest::Test
     assert_equal Time.parse('2012-02-26 20:58:23 UTC'),transaction.updated_at
   end
 
-  def test_it_knows_its_invoices
-    invoices = transaction.invoices
-    assert_equal 7, invoices.count
-    assert_instance_of Invoice, invoices.sample
-    assert_equal 111, invoices.sample.transaction_id
+  def test_it_knows_its_invoice
+    assert_instance_of Invoice, transaction.invoice
+    assert_equal 111, transaction.invoice.transaction_id
   end
+
+
 end
