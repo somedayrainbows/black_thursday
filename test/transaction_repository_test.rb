@@ -32,7 +32,7 @@ class TransactionRepositoryTest < Minitest::Test
 
   def test_it_can_find_all_by_result
     transactions = transaction_repository.find_all_by_result('success')
-    assert_equal 7, transactions.count
+    assert_equal 91, transactions.count
     assert_instance_of Transaction, transactions.sample
     assert_equal 'success', transactions.sample.result
   end
