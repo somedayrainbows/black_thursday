@@ -9,4 +9,4 @@ $sales_engine = SalesEngine.from_csv({:items => "./test/fixtures/items_truncated
   :merchants => "./test/fixtures/merchants_truncated.csv",
   :invoices => "./test/fixtures/invoices_truncated.csv",
   :invoice_items => "./test/fixtures/invoice_items_truncated.csv",
-  :transactions => "./data/transactions.csv"})
+  :transactions => "./test/fixtures/transactions_truncated.csv"})

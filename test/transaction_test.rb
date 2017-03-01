@@ -7,7 +7,7 @@ class TransactionTest < Minitest::Test
 
   def setup
     @se = $sales_engine
-    @transaction = Transaction.new('./data/transactions.csv', nil)
+    @transaction = Transaction.new('./test/fixtures/transactions_truncated.csv', nil)
   end
 
   def test_its_a_transaction

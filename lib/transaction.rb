@@ -12,7 +12,8 @@ class Transaction
     @id = params[:id].to_i
     @invoice_id = params[:invoice_id].to_i
     @credit_card_number = params[:credit_card_number].to_i
-    @credit_card_expiration_date = Date.parse(params[:credit_card_expiration_date])
+    date_to_parse = params[:credit_card_expiration_date].rjust(4,'0')
+    @credit_card_expiration_date = Date.parse(date_to_parse)
     @result = params[:result]
     @created_at = Time.parse(params[:created_at])
     @updated_at = Time.parse(params[:updated_at])
