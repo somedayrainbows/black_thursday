@@ -21,4 +21,17 @@ class Invoice
   def merchant
     se.merchants.find_by_id(merchant_id)
   end
+
+  def items
+    item_ids = []
+    se.invoice_items.all.map do |invoice_item|
+      item_ids << invoice_item.item_id if invoice_item.invoice_id == id
+    end
+    item_ids
+    se.items.all.reduce([]) do |item_objects, item|
+    item_objects << item if item_ids.include?(item.id)
+      item_objects
+    end
+  end
+
 end

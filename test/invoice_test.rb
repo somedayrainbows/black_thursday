@@ -1,4 +1,4 @@
-require 'test_helper'
+require_relative 'test_helper'
 require_relative './../lib/invoice'
 
 class InvoiceTest < Minitest::Test
@@ -27,7 +27,15 @@ class InvoiceTest < Minitest::Test
 
   def test_it_can_find_its_merchant
     invoice = se.invoices.find_by_id(20)
+
     assert_instance_of Merchant, invoice.merchant
+  end
+
+  def test_it_can_find_its_id_through_sales_engine
+    invoice = se.invoices.find_by_id(20)
+
+    assert_instance_of Item, invoice.items.sample
+    # invoice.items => [item, item, item]
   end
 
 end
