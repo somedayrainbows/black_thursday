@@ -1,9 +1,9 @@
-require 'csv'
-require_relative './merchant'
-require_relative './repository_methods'
-
+require_relative 'merchant'
 
 class MerchantRepository
+
+  include RepositoryMethods
+  extend ClassMethods
 
   attr_accessor :collection, :child
 
@@ -13,7 +13,6 @@ class MerchantRepository
     populate_repository(path, sales_engine)
   end
 
-  include RepositoryMethods
 
   def inspect
     "#<#{self.class} #{@collection.size} rows>"

@@ -1,6 +1,6 @@
-require_relative 'item'
+require_relative 'invoice_item'
 
-class ItemRepository
+class InvoiceItemRepository
 
   include RepositoryMethods
   extend ClassMethods
@@ -8,11 +8,10 @@ class ItemRepository
   attr_accessor :collection, :child
 
   def initialize(path, sales_engine)
-    @child = Item
+    @child = InvoiceItem
     @collection = Hash.new
     populate_repository(path, sales_engine)
   end
-
 
   def inspect
     "#<#{self.class} #{@collection.size} rows>"

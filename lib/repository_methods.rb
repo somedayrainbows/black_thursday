@@ -1,6 +1,5 @@
 module RepositoryMethods
-  def populate_repository(path, sales_engine)
-    data = CSV.read(path, headers: true, header_converters: :symbol)
+  def populate_repository(data, sales_engine)
     data.each do |row|
       collection[row[:id].to_sym] = child.new(row, sales_engine)
     end
@@ -23,10 +22,50 @@ module RepositoryMethods
     nil
   end
 
-  def find_all_by_name(name_fragment)
+  def find_all_with_description(fragment)
+    items_matching_description = []
+    collection.each do |id, item|
+      fragment_present = item.description.downcase.include?(fragment.downcase)
+      items_matching_description << item if fragment_present
+    end
+    items_matching_description
+  end
 
+  def find_all_by_price(price)
+    items_matching_price = []
+    collection.each do |id, item|
+      items_matching_price << item if item.unit_price == price
+    end
+    items_matching_price
+  end
+
+  def find_all_by_price_in_range(range)
+      range_minimum = range.first
+      range_maximum = range.last
+      items_matching_supplied_range = []
+      collection.each do |id, item|
+        items_matching_supplied_range << item if item.unit_price >= range_minimum && item.unit_price <= range_maximum
+      end
+    items_matching_supplied_range
+  end
+
+  def find_all_by_name(name_fragment)
     collection.reduce([]) do |all_matches, (id, entry)|
       all_matches << entry if entry.name.downcase.include?(name_fragment.downcase)
+      all_matches
+    end
+  end
+
+  def find_all_by_first_name(name_fragment)
+    collection.reduce([]) do |all_matches, (id, entry)|
+      all_matches << entry if entry.first_name.downcase.include?(name_fragment.downcase)
+      all_matches
+    end
+  end
+
+  def find_all_by_last_name(name_fragment)
+    collection.reduce([]) do |all_matches, (id, entry)|
+      all_matches << entry if entry.last_name.downcase.include?(name_fragment.downcase)
       all_matches
     end
   end
@@ -63,6 +102,20 @@ module RepositoryMethods
     collection.reduce([]) do |invoice_id_matches, (id, entry)|
       invoice_id_matches << entry if entry.invoice_id == invoice_id
       invoice_id_matches
+    end
+  end
+
+  def find_all_by_credit_card_number(credit_card_number)
+    collection.reduce([]) do |matches, (id, entry)|
+      matches << entry if entry.credit_card_number == credit_card_number
+      matches
+    end
+  end
+
+  def find_all_by_result(result)
+    collection.reduce([]) do |matches, (id, entry)|
+      matches << entry if entry.result == result
+      matches
     end
   end
 
