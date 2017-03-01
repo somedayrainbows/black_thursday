@@ -8,6 +8,7 @@ class Invoice
   attr_reader :id, :customer_id, :merchant_id, :status, :created_at, :updated_at, :se
 
   def initialize(params, sales_engine)
+    params = Invoice.read_csv(params).first if params.instance_of?(String)
     @se = sales_engine
     @id = params[:id].to_i
     @customer_id = params[:customer_id].to_i

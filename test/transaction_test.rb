@@ -15,12 +15,12 @@ class TransactionTest < Minitest::Test
   end
 
   def test_it_knows_its_own_info
-    assert_equal 1, transaction.id
-    assert_equal 2179, transaction.invoice_id
-    assert_equal 4068631943231473, transaction.credit_card_number
-    assert_equal Date.parse('0217'), transaction.credit_card_expiration_date
+    assert_equal 2650, transaction.id
+    assert_equal 1, transaction.invoice_id
+    assert_equal 4306389908591848, transaction.credit_card_number
+    assert_equal Date.parse('0914'), transaction.credit_card_expiration_date
     assert_equal 'success', transaction.result
-    assert_equal Time.parse('2012-02-26 20:56:56 UTC'), transaction.created_at
-    assert_equal Time.parse('2012-02-26 20:56:56 UTC'),transaction.updated_at
+    assert_equal Time.parse('2012-02-26 20:58:23 UTC'), transaction.created_at
+    assert_equal Time.parse('2012-02-26 20:58:23 UTC'),transaction.updated_at
   end
 end

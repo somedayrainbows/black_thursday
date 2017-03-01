@@ -1,21 +1,12 @@
-require 'minitest/autorun'
-require 'minitest/pride'
+require 'test_helper'
 require_relative './../lib/invoice'
-require_relative './../lib/sales_engine'
-require 'csv'
-
 
 class InvoiceTest < Minitest::Test
   attr_reader :invoice, :se
 
   def setup
-    @se = SalesEngine.from_csv({
-      :items     => "./test/fixtures/items_truncated.csv",
-      :merchants => "./test/fixtures/merchants_truncated.csv",
-      :invoices => "./test/fixtures/invoices_truncated.csv", :invoice_items => "./test/fixtures/invoice_items_truncated.csv"
-     })
-    path = CSV.read('./test/fixtures/invoices_truncated.csv', headers: true, header_converters: :symbol).first
-    @invoice = Invoice.new(path, nil)
+    @se = $sales_engine
+    @invoice = Invoice.new('./test/fixtures/invoices_truncated.csv', nil)
   end
 
   def test_it_exists
