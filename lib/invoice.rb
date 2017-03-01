@@ -24,11 +24,23 @@ class Invoice
     se.invoice_items.all.map do |invoice_item|
       item_ids << invoice_item.item_id if invoice_item.invoice_id == id
     end
-    item_ids
-    se.items.all.reduce([]) do |item_objects, item|
-    item_objects << item if item_ids.include?(item.id)
-      item_objects
+    item_objects = item_ids.map do |item_id|
+      se.items.find_by_id(item_id)
+    # se.items.all.reduce([]) do |item_objects, item|
+    # item_objects << item if item_ids.include?(item.id)
+    #   item_objects
     end
+  end
+
+  def transactions
+    se.transactions.all.reduce([]) do |transaction_objects, transaction|
+      transaction_objects << transaction if transaction.invoice_id == id
+      transaction_objects
+    end
+  end
+
+  def customer
+    se.customers.find_by_id(customer_id)
   end
 
 end

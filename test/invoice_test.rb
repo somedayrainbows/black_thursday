@@ -27,8 +27,17 @@ class InvoiceTest < Minitest::Test
     assert_instance_of Merchant, invoice.merchant
   end
 
-  def test_it_can_find_its_id_through_sales_engine
+  def test_it_returns_an_array_of_related_item_objects
     assert_instance_of Item, invoice.items.sample
+  end
+
+  def test_returns_an_array_of_related_transaction_objects
+    assert_instance_of Transaction, invoice.transactions.sample
+  end
+
+  def test_returns_a_related_customer_object
+    assert_instance_of Customer, invoice.customer
+    # =>  customer
   end
 
 end
