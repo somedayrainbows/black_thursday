@@ -31,4 +31,10 @@ class InvoiceTest < Minitest::Test
     assert_instance_of Item, invoice.items.sample
   end
 
+  def test_it_can_verify_if_an_invoice_is_paid_in_full
+    invoice2 = $sales_engine.invoices.find_by_id(21)
+
+    assert invoice.paid_in_full?
+    refute invoice2.paid_in_full?
+  end
 end

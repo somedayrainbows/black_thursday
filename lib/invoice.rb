@@ -31,4 +31,12 @@ class Invoice
     end
   end
 
+  def paid_in_full?
+    # if transactions.result == success
+    # find invoice_id in transactions
+    transactions = se.transactions.find_all_by_invoice_id(id)
+    transactions.all? do |transaction|
+      transaction.result == 'success'
+    end
+  end
 end

@@ -24,10 +24,11 @@ module RepositoryMethods
     nil
   end
 
-  def find_all_with_description(description_fragment)
+  def find_all_with_description(fragment)
     items_matching_description = []
     collection.each do |id, item|
-      items_matching_description << item if item.description.downcase.include?(description_fragment.downcase)
+      fragment_present = item.description.downcase.include?(fragment.downcase)
+      items_matching_description << item if fragment_present
     end
     items_matching_description
   end
