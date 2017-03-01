@@ -7,7 +7,7 @@ class TransactionTest < Minitest::Test
 
   def setup
     @se = $sales_engine
-    @transaction = Transaction.new('./test/fixtures/transactions_truncated.csv', nil)
+    @transaction = Transaction.new('./test/fixtures/transactions_truncated.csv', se)
   end
 
   def test_its_a_transaction
@@ -26,7 +26,7 @@ class TransactionTest < Minitest::Test
 
   def test_it_knows_its_invoice
     assert_instance_of Invoice, transaction.invoice
-    assert_equal 111, transaction.invoice.transaction_id
+    assert_equal transaction.invoice_id, transaction.invoice.id
   end
 
 
