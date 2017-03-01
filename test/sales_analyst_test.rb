@@ -14,7 +14,7 @@ class SalesAnalystTest < Minitest::Test
   end
 
   def test_it_returns_average_items_per_merchant
-    assert_equal 2.55, sa.average_items_per_merchant
+    assert_equal 2.61, sa.average_items_per_merchant
   end
 
   def test_average_items_per_merchant_standard_deviation
@@ -48,7 +48,7 @@ class SalesAnalystTest < Minitest::Test
 
   def test_it_can_calculate_standard_deviation
     collection = se.items.all.map { |item| item.unit_price }
-    assert_equal 16593068.75, sa.find_standard_deviation(collection)
+    assert_equal 16413289.92, sa.find_standard_deviation(collection)
   end
 
   def test_it_can_determine_the_standard_deviation_of_average_invoices_per_merchant
