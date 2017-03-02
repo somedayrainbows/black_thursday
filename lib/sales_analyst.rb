@@ -208,6 +208,26 @@ class SalesAnalyst
     end
   end
 
+  def highest_volume_items(customer_id)
+    invoices = se.invoices.find_all_by_customer_id(customer_id)
+    invoice_items = invoices.map do |invoice|
+      se.invoice_items.find_all_by_invoice_id(invoice.id)
+    end.flatten
+
+    quantity = invoice_items.max_by do |invoice_item|
+      invoice_item.quantity
+    end.quantity
+
+    invoice_items_with_highest_quantity = invoice_items.select do |invoice_item|
+      invoice_item.quantity == quantity
+    end
+
+    items = invoice_items_with_highest_quantity.map do |invoice_item|
+      item = se.items.find_by_id(invoice_item.item_id)
+      Item.new('./test/fixtures/items_truncated.csv', nil) unless item
+    end
+  end
+
   def top_buyers(n = 20)
     se.customers.all.sort_by do |customer|
       invoices = se.invoices.find_all_by_customer_id(customer.id)

@@ -121,8 +121,15 @@ class SalesAnalystTest < Minitest::Test
   end
 
   def test_return_customers_that_spent_the_most
-   assert_equal 5, sa.top_buyers(5).count
-   assert_equal 20, sa.top_buyers.count
-   assert_instance_of Customer, sa.top_buyers(5).sample
- end
+    assert_equal 5, sa.top_buyers(5).count
+    assert_equal 20, sa.top_buyers.count
+    assert_instance_of Customer, sa.top_buyers(5).sample
+  end
+
+  def test_identifies_a_customers_highest_value_items
+    items = sa.highest_volume_items(1)
+
+    assert_equal 2, items.count
+    assert_instance_of Item, items.sample
+  end
 end
