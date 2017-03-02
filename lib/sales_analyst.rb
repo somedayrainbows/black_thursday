@@ -257,4 +257,13 @@ class SalesAnalyst
       invoice.total
     end
   end
+
+  def customers_with_unpaid_invoices
+    se.customers.all.select do |customer|
+      invoices = se.invoices.find_all_by_customer_id(customer.id)
+      !invoices.all? do |invoice|
+        invoice.is_paid_in_full?
+      end
+    end
+  end
 end

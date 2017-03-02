@@ -145,4 +145,11 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 73, invoice.id
     assert_equal 38500.84, invoice.total
   end
+
+  def test_it_reports_unpaid_customers
+    customers = sa.customers_with_unpaid_invoices
+
+    assert_equal 17, customers.count
+    assert_instance_of Customer, customers.sample
+  end
 end
