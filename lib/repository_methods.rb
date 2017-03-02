@@ -44,28 +44,33 @@ module RepositoryMethods
       range_maximum = range.last
       items_matching_supplied_range = []
       collection.each do |id, item|
-        items_matching_supplied_range << item if item.unit_price >= range_minimum && item.unit_price <= range_maximum
+        price = item.unit_price
+        price_in_range = price >= range_minimum && price <= range_maximum
+        items_matching_supplied_range << item if price_in_range
       end
     items_matching_supplied_range
   end
 
   def find_all_by_name(name_fragment)
     collection.reduce([]) do |all_matches, (id, entry)|
-      all_matches << entry if entry.name.downcase.include?(name_fragment.downcase)
+      fragment_present = entry.name.downcase.include?(name_fragment.downcase)
+      all_matches << entry if fragment_present
       all_matches
     end
   end
 
-  def find_all_by_first_name(name_fragment)
+  def find_all_by_first_name(fragment)
     collection.reduce([]) do |all_matches, (id, entry)|
-      all_matches << entry if entry.first_name.downcase.include?(name_fragment.downcase)
+      fragment_present = entry.first_name.downcase.include?(fragment.downcase)
+      all_matches << entry if fragment_present
       all_matches
     end
   end
 
-  def find_all_by_last_name(name_fragment)
+  def find_all_by_last_name(fragment)
     collection.reduce([]) do |all_matches, (id, entry)|
-      all_matches << entry if entry.last_name.downcase.include?(name_fragment.downcase)
+      fragment_present = entry.last_name.downcase.include?(fragment.downcase)
+      all_matches << entry if fragment_present
       all_matches
     end
   end

@@ -4,7 +4,13 @@ class SalesEngine
 
   extend ClassMethods
 
-  attr_reader :merchants, :items, :invoices, :invoice_items, :customers, :transactions
+  attr_reader :merchants,
+              :items,
+              :invoices,
+              :invoice_items,
+              :customers,
+              :transactions
+
   def initialize(paths)
     @merchants = MerchantRepository.from_csv(paths[:merchants], self)
     @items = ItemRepository.from_csv(paths[:items], self)

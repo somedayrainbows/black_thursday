@@ -2,7 +2,14 @@ class Item
 
   extend ClassMethods
 
-  attr_reader :name, :id, :description, :unit_price, :created_at, :updated_at, :merchant_id, :se
+  attr_reader :name,
+              :id,
+              :description,
+              :unit_price,
+              :created_at,
+              :updated_at,
+              :merchant_id,
+              :se
 
   def initialize(params, sales_engine)
     params = Item.read_csv(params).first if params.instance_of?(String)

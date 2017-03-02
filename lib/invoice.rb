@@ -2,7 +2,13 @@ class Invoice
 
   extend ClassMethods
 
-  attr_reader :id, :customer_id, :merchant_id, :status, :created_at, :updated_at, :se
+  attr_reader :id,
+              :customer_id,
+              :merchant_id,
+              :status,
+              :created_at,
+              :updated_at,
+              :se
 
   def initialize(params, sales_engine)
     params = Invoice.read_csv(params).first if params.instance_of?(String)
@@ -42,7 +48,8 @@ class Invoice
   end
 
   def total
-    se.invoice_items.find_all_by_invoice_id(id).reduce(0) do |total, invoice_item|
+    invoice_items = se.invoice_items.find_all_by_invoice_id(id)
+    invoice_items.reduce(0) do |total, invoice_item|
       total += invoice_item.unit_price * invoice_item.quantity
     end
   end

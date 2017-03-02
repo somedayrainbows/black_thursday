@@ -2,7 +2,14 @@ class InvoiceItem
 
   extend ClassMethods
 
-  attr_reader :id, :item_id, :invoice_id, :quantity, :unit_price, :created_at, :updated_at, :se
+  attr_reader :id,
+              :item_id,
+              :invoice_id,
+              :quantity,
+              :unit_price,
+              :created_at,
+              :updated_at,
+              :se
 
   def initialize(params, sales_engine)
     params = InvoiceItem.read_csv(params).first if params.instance_of?(String)

@@ -1,12 +1,15 @@
 require 'pry'
 
 class SalesAnalyst
-  attr_reader :se, :avg_items_per_merchant, :avg_items_per_merchant_standard_deviation
+  attr_reader :se,
+              :avg_items_per_merchant,
+              :avg_items_per_merchant_std_dev
 
   def initialize(sales_engine)
     @se = sales_engine
     @avg_items_per_merchant = average_items_per_merchant
-    @avg_items_per_merchant_standard_deviation = average_items_per_merchant_standard_deviation
+    @avg_items_per_merchant_std_dev =
+      average_items_per_merchant_standard_deviation
   end
 
   # Refactor simple count references
@@ -31,7 +34,8 @@ class SalesAnalyst
 
   def merchants_with_high_item_count
     se.merchants.all.select do |merchant|
-      merchant.items.count > avg_items_per_merchant + avg_items_per_merchant_standard_deviation
+      threshold = avg_items_per_merchant + avg_items_per_merchant_std_dev
+      merchant.items.count > threshold
     end
   end
 
@@ -121,9 +125,13 @@ class SalesAnalyst
   end
 
   def top_days_by_invoice_count
-    day_counts = calculate_total_daily_entries(find_entries_for_each_day(se.invoices.all))
-    days_threshold = find_average(day_counts) + find_standard_deviation(day_counts)
-    find_entries_for_each_day(se.invoices.all).reduce([]) do |top_days, (day, count)|
+    entries = find_entries_for_each_day(se.invoices.all)
+    day_counts = calculate_total_daily_entries(entries)
+    average = find_average(day_counts)
+    std_dev = find_standard_deviation(day_counts)
+    days_threshold = average + std_dev
+    entries = find_entries_for_each_day(se.invoices.all)
+    entries.reduce([]) do |top_days, (day, count)|
       top_days << day if count > days_threshold
       top_days
     end
@@ -148,16 +156,17 @@ class SalesAnalyst
     grouped = invoice_items.group_by do |ii|
       se.invoices.find_by_id(ii.invoice_id).merchant_id
     end
-    number_of_purchases_at_merchant = grouped.reduce(Hash.new(0)) do |hash, (merchant_id, invoice_items)|
+    purchases_count =
+      grouped.reduce(Hash.new(0)) do |hash, (merchant_id, invoice_items)|
       hash[merchant_id] = invoice_items.reduce(0) do |total, invoice_item|
         total += invoice_item.quantity
       end
       hash
     end
-    favorite_merchant_id = number_of_purchases_at_merchant.max_by do |merchant_id, purchases_count|
+    merchant_id = purchases_count.max_by do |merchant_id, purchases_count|
       purchases_count
     end.first
-    se.merchants.find_by_id(favorite_merchant_id)
+    se.merchants.find_by_id(merchant_id)
   end
 
   def one_time_buyers
@@ -173,20 +182,21 @@ class SalesAnalyst
       end << customer.id
     end
 
-    items_purchased_by_customer = items_purchased.reduce([]) do |ary, items_and_cust_id|
+    items = items_purchased.reduce([]) do |ary, items_and_cust_id|
       items_and_cust_id.first.each do |item|
         ary << [item, items_and_cust_id.last]
       end
       ary
     end
 
-    times_an_item_was_purchased = items_purchased_by_customer.reduce(Hash.new(0)) do |hash, item|
+    items_purchase_frequency = items.reduce(Hash.new(0)) do |hash, item|
       customer_id = item.last
       item = item.first
       if item
         invoice_items = se.invoice_items.find_all_by_item_id(item.id)
         matching_invoice_item = invoice_items.select do |invoice_item|
-          se.invoices.find_by_id(invoice_item.invoice_id).customer_id == customer_id
+          invoice = se.invoices.find_by_id(invoice_item.invoice_id)
+          invoice.customer_id == customer_id
         end.first
         quantity = matching_invoice_item.quantity
 
@@ -195,18 +205,18 @@ class SalesAnalyst
       hash
     end
 
-    times_an_item_was_purchased = times_an_item_was_purchased.sort_by do |key, val|
+    items_purchase_frequency = items_purchase_frequency.sort_by do |key, val|
       -val
     end
 
-    most_purchases = times_an_item_was_purchased.first.last
+    most_purchases = items_purchase_frequency.first.last
 
-    most_purchased_items_by_one_time_buyers = times_an_item_was_purchased.select do |item_id_and_purchased_count|
-      item_id_and_purchased_count.last == most_purchases
+    top_items = items_purchase_frequency.select do |item_id|
+      item_id.last == most_purchases
     end
 
-    most_purchased_items_by_one_time_buyers.map do |item_id_and_purchased_count|
-      se.items.find_by_id(item_id_and_purchased_count.first)
+    top_items.map do |item_id|
+      se.items.find_by_id(item_id.first)
     end
   end
 
@@ -271,11 +281,12 @@ class SalesAnalyst
 
   def items_bought_in_year(customer_id, year)
     customer_invoices = se.invoices.find_all_by_customer_id(customer_id)
-    invoices_by_year_by_customer = []
+    invoices = []
     customer_invoices.map do |invoice|
-      invoices_by_year_by_customer << invoice.id if invoice.created_at.year == year && invoice.is_paid_in_full?
+      year_match = invoice.created_at.year == year && invoice.is_paid_in_full?
+      invoices << invoice.id if year_match
     end
-    invoices_by_year_by_customer.map do |invoice_id|
+    invoices.map do |invoice_id|
       se.invoices.find_by_id(invoice_id).items
     end.flatten
   end
