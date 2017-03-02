@@ -237,4 +237,15 @@ class SalesAnalyst
       end
     end.last(n).reverse
   end
+
+  def best_invoice_by_quantity
+    invoices = se.invoices.all.select do |invoice|
+      invoice.is_paid_in_full?
+    end
+    invoices.max_by do |invoice|
+      invoice.invoice_items.reduce(0) do |total, invoice_item|
+        total += invoice_item.quantity
+      end
+    end
+  end
 end

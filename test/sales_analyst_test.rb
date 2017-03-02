@@ -132,4 +132,10 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 2, items.count
     assert_instance_of Item, items.sample
   end
+
+  def test_returns_invoices_with_highest_item_count
+    invoice = sa.best_invoice_by_quantity
+
+    assert_equal 32, invoice.id
+  end
 end
