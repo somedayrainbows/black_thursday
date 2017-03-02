@@ -158,4 +158,9 @@ class SalesAnalyst
     se.merchants.find_by_id(favorite_merchant_id)
   end
 
+  def one_time_buyers
+    se.customers.all.select do |customer|
+      customer.fully_paid_invoices.count == 1
+    end
+  end
 end

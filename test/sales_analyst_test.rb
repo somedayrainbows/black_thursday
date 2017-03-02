@@ -105,4 +105,9 @@ class SalesAnalystTest < Minitest::Test
 
     assert_equal merchant, sa.top_merchant_for_customer(1)
   end
+
+  def test_it_knows_which_customers_only_had_one_invoice
+    assert_equal 2, sa.one_time_buyers.count
+    assert_instance_of Customer, sa.one_time_buyers.sample
+  end
 end
