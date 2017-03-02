@@ -248,4 +248,13 @@ class SalesAnalyst
       end
     end
   end
+
+  def best_invoice_by_revenue
+    invoices = se.invoices.all.select do |invoice|
+      invoice.is_paid_in_full?
+    end
+    invoices.max_by do |invoice|
+      invoice.total
+    end
+  end
 end

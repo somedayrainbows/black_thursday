@@ -138,4 +138,11 @@ class SalesAnalystTest < Minitest::Test
 
     assert_equal 32, invoice.id
   end
+
+  def test_best_invoice_by_revenue
+    invoice = sa.best_invoice_by_revenue
+
+    assert_equal 73, invoice.id
+    assert_equal 38500.84, invoice.total
+  end
 end
