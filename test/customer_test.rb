@@ -35,4 +35,11 @@ class CustomerTest < Minitest::Test
     assert_equal 8, customer.merchants.size
     assert_instance_of Merchant, customer.merchants.sample
   end
+
+  def test_it_knows_its_fully_paid_invoices
+    fully_paid_invoices = customer.fully_paid_invoices
+
+    assert_equal 6, fully_paid_invoices.count
+    assert_instance_of Invoice, fully_paid_invoices.sample
+  end
 end

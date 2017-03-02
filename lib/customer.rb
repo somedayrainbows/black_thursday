@@ -25,5 +25,10 @@ class Customer
     end
   end
 
-  # find merchant ids
+  def fully_paid_invoices
+    invoices = se.invoices.find_all_by_customer_id(id)
+    invoices.select do |invoice|
+      invoice.is_paid_in_full?
+    end
+  end
 end
