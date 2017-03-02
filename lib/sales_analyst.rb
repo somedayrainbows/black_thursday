@@ -1,3 +1,5 @@
+require 'pry'
+
 class SalesAnalyst
   attr_reader :se, :avg_items_per_merchant, :avg_items_per_merchant_standard_deviation
 
@@ -176,5 +178,16 @@ class SalesAnalyst
         total
       end
     end.last(n).reverse
+  end
+
+  def items_bought_in_year(customer_id, year)
+    customer_invoices = se.invoices.find_all_by_customer_id(customer_id)
+    invoices_by_year_by_customer = []
+    customer_invoices.map do |invoice|
+      invoices_by_year_by_customer << invoice.id if invoice.created_at.year == year && invoice.is_paid_in_full?
+    end
+      invoices_by_year_by_customer.map do |invoice_id|
+          se.invoices.find_by_id(invoice_id).items
+    end.flatten
   end
 end
