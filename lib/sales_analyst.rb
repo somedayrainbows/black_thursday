@@ -163,4 +163,18 @@ class SalesAnalyst
       customer.fully_paid_invoices.count == 1
     end
   end
+
+  def one_time_buyers_item
+
+  end
+
+  def top_buyers(n = 20)
+    se.customers.all.sort_by do |customer|
+      invoices = se.invoices.find_all_by_customer_id(customer.id)
+      invoices.reduce(0) do  |total, invoice|
+        total += invoice.total if invoice.is_paid_in_full?
+        total
+      end
+    end.last(n).reverse
+  end
 end

@@ -107,7 +107,22 @@ class SalesAnalystTest < Minitest::Test
   end
 
   def test_it_knows_which_customers_only_had_one_invoice
-    assert_equal 2, sa.one_time_buyers.count
-    assert_instance_of Customer, sa.one_time_buyers.sample
+    one_time_buyers = sa.one_time_buyers
+
+    assert_equal 2, one_time_buyers.count
+    assert_instance_of Customer, one_time_buyers.sample
   end
+
+  def test_it_knows_the_items_a_one_time_buyer_bought
+    one_time_buyers_items = sa.one_time_buyers_items
+
+    assert_equal 3, one_time_buyers_items.size
+    assert_instance_of Item, one_time_buyers_items.sample
+  end
+
+  def test_return_customers_that_spent_the_most
+   assert_equal 5, sa.top_buyers(5).count
+   assert_equal 20, sa.top_buyers.count
+   assert_instance_of Customer, sa.top_buyers(5).sample
+ end
 end
