@@ -152,4 +152,13 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 17, customers.count
     assert_instance_of Customer, customers.sample
   end
+
+ def test_it_returns_a_customers_purchased_items_in_a_given_year
+   assert_equal 263519844, sa.items_bought_in_year(1, 2009).first.id
+
+   assert_instance_of Item,
+    sa.items_bought_in_year(1, 2009).first
+
+   assert_equal 8, sa.items_bought_in_year(1, 2009).count
+ end
 end

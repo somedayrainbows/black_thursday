@@ -20,4 +20,5 @@ class InvoiceItem
     BigDecimal.new(price) / 100
   end
 
+
 end
