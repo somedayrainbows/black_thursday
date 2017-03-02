@@ -99,8 +99,10 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 8.08, sa.invoice_status(:returned)
   end
 
-  def test_return_customers_that_spent_the_most
-    assert_equal 5, sa.top_buyers(5).count
-    assert_instance_of Customer, sa.top_buyers(5).sample
+  def test_it_knows_which_merchant_a_customer_bought_the_most_items_from
+    customer = se.customers.find_by_id(1)
+    merchant = customer.merchants[2]
+
+    assert_equal merchant, sa.top_merchant_for_customer(1)
   end
 end

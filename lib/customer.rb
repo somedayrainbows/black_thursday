@@ -24,4 +24,6 @@ class Customer
       se.merchants.find_by_id(merchant_id)
     end
   end
+
+  # find merchant ids
 end

@@ -135,4 +135,27 @@ class SalesAnalyst
     ((statuses[status] / se.invoices.all.count.to_f) * 100).round(2)
   end
 
+  def top_merchant_for_customer(customer_id)
+    customer = se.customers.find_by_id(customer_id)
+    invoices = se.invoices.all.select do |invoice|
+      invoice.customer_id == customer_id
+    end
+    invoice_items = invoices.collect do |invoice|
+      se.invoice_items.find_all_by_invoice_id(invoice.id)
+    end.flatten
+    grouped = invoice_items.group_by do |ii|
+      se.invoices.find_by_id(ii.invoice_id).merchant_id
+    end
+    number_of_purchases_at_merchant = grouped.reduce(Hash.new(0)) do |hash, (merchant_id, invoice_items)|
+      hash[merchant_id] = invoice_items.reduce(0) do |total, invoice_item|
+        total += invoice_item.quantity
+      end
+      hash
+    end
+    favorite_merchant_id = number_of_purchases_at_merchant.max_by do |merchant_id, purchases_count|
+      purchases_count
+    end.first
+    se.merchants.find_by_id(favorite_merchant_id)
+  end
+
 end
