@@ -5,7 +5,8 @@ class InvoiceItemRepository
   include RepositoryMethods
   extend ClassMethods
 
-  attr_accessor :collection, :child
+  attr_accessor :collection,
+                :child
 
   def initialize(path, sales_engine)
     @child = InvoiceItem

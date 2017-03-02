@@ -1,7 +1,6 @@
 require_relative 'test_helper'
 
 class InvoiceRepositoryTest < Minitest::Test
-
   attr_reader :invoice_repository
 
   def setup
@@ -39,5 +38,4 @@ class InvoiceRepositoryTest < Minitest::Test
     assert_equal 29, invoice_repository.find_all_by_status(:pending).count
     assert_instance_of Invoice, invoice_repository.find_all_by_status(:returned).sample
   end
-
 end

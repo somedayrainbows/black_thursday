@@ -1,7 +1,6 @@
 require_relative 'test_helper'
 
 class MerchantTest < Minitest::Test
-
   attr_reader :merchant
 
   def setup

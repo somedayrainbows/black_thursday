@@ -2,7 +2,8 @@ require_relative 'test_helper'
 require_relative './../lib/sales_analyst'
 
 class SalesAnalystTest < Minitest::Test
-  attr_reader :sa, :se
+  attr_reader :sa,
+              :se
 
   def setup
     @se = $sales_engine
@@ -23,7 +24,6 @@ class SalesAnalystTest < Minitest::Test
 
   def test_it_identifies_whales
     assert_equal 10, sa.merchants_with_high_item_count.length
-
     assert_includes sa.merchants_with_high_item_count, se.merchants.find_by_id(12334365)
   end
 

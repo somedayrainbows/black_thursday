@@ -2,7 +2,12 @@ class Customer
 
   extend ClassMethods
 
-  attr_reader :id, :first_name, :last_name, :created_at, :updated_at, :se
+  attr_reader :id,
+              :first_name,
+              :last_name,
+              :created_at,
+              :updated_at,
+              :se
 
   def initialize(params, sales_engine)
     params = Customer.read_csv(params).first if params.instance_of?(String)

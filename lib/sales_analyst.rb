@@ -1,5 +1,3 @@
-require 'pry'
-
 class SalesAnalyst
   attr_reader :se,
               :avg_items_per_merchant,
@@ -12,7 +10,6 @@ class SalesAnalyst
       average_items_per_merchant_standard_deviation
   end
 
-  # Refactor simple count references
   def average_items_per_merchant
     (se.items.all.count.to_f / se.merchants.all.count.to_f).round(2)
   end

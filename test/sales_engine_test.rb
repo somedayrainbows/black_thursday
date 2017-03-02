@@ -30,5 +30,4 @@ class SalesEngineTest < Minitest::Test
   def test_it_can_return_instance_of_transactions
     assert_instance_of TransactionRepository, se.transactions
   end
-
 end

@@ -2,7 +2,11 @@ class Merchant
 
   extend ClassMethods
 
-  attr_reader :name, :id, :created_at, :updated_at, :se
+  attr_reader :name,
+              :id,
+              :created_at,
+              :updated_at,
+              :se
 
   def initialize(params, sales_engine)
     params = Merchant.read_csv(params).first if params.instance_of?(String)

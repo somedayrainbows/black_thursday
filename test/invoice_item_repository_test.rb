@@ -29,5 +29,4 @@ class InvoiceItemRepositoryTest < Minitest::Test
     assert_equal 8, invoice_item_repository.find_all_by_invoice_id(14).count
     assert_instance_of InvoiceItem, invoice_item_repository.find_all_by_invoice_id(14).sample
   end
-
 end

@@ -21,7 +21,7 @@ class Item
     @unit_price = unit_price_to_dollars(params[:unit_price])
     @created_at = Time.parse(params[:created_at])
     @updated_at = Time.parse(params[:updated_at])
-    @merchant_id = params[:merchant_id].to_i # test coverage for this
+    @merchant_id = params[:merchant_id].to_i
   end
 
   def unit_price_to_dollars(price)

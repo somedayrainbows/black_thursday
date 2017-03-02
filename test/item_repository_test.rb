@@ -1,7 +1,6 @@
 require_relative 'test_helper'
 
 class ItemRepositoryTest < Minitest::Test
-
   attr_reader :item_repository
 
   def setup

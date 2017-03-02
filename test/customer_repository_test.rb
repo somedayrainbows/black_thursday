@@ -26,5 +26,4 @@ class CustomerRepositoryTest < Minitest::Test
 
     assert_equal 2, customer_repository.find_all_by_last_name("on").count
   end
-
 end

@@ -1,7 +1,6 @@
 require_relative 'test_helper'
 
 class TransactionTest < Minitest::Test
-
   attr_reader :transaction
 
   def setup
