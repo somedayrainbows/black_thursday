@@ -19,6 +19,10 @@ class Invoice
     se.merchants.find_by_id(merchant_id)
   end
 
+  def invoice_items
+    se.invoice_items.find_all_by_invoice_id(id)
+  end
+
   def items
     item_ids = []
     se.invoice_items.all.map do |invoice_item|
