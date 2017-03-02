@@ -164,8 +164,48 @@ class SalesAnalyst
     end
   end
 
-  def one_time_buyers_item
+  def one_time_buyers_items
+    items_purchased = one_time_buyers.map do |customer|
+      customer.fully_paid_invoices.collect do |invoice|
+        invoice.items
+      end << customer.id
+    end
 
+    items_purchased_by_customer = items_purchased.reduce([]) do |ary, items_and_cust_id|
+      items_and_cust_id.first.each do |item|
+        ary << [item, items_and_cust_id.last]
+      end
+      ary
+    end
+
+    times_an_item_was_purchased = items_purchased_by_customer.reduce(Hash.new(0)) do |hash, item|
+      customer_id = item.last
+      item = item.first
+      if item
+        invoice_items = se.invoice_items.find_all_by_item_id(item.id)
+        matching_invoice_item = invoice_items.select do |invoice_item|
+          se.invoices.find_by_id(invoice_item.invoice_id).customer_id == customer_id
+        end.first
+        quantity = matching_invoice_item.quantity
+
+        hash[item.id] += quantity if item
+      end
+      hash
+    end
+
+    times_an_item_was_purchased = times_an_item_was_purchased.sort_by do |key, val|
+      -val
+    end
+
+    most_purchases = times_an_item_was_purchased.first.last
+
+    most_purchased_items_by_one_time_buyers = times_an_item_was_purchased.select do |item_id_and_purchased_count|
+      item_id_and_purchased_count.last == most_purchases
+    end
+
+    most_purchased_items_by_one_time_buyers.map do |item_id_and_purchased_count|
+      se.items.find_by_id(item_id_and_purchased_count.first)
+    end
   end
 
   def top_buyers(n = 20)

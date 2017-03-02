@@ -116,7 +116,7 @@ class SalesAnalystTest < Minitest::Test
   def test_it_knows_the_items_a_one_time_buyer_bought
     one_time_buyers_items = sa.one_time_buyers_items
 
-    assert_equal 3, one_time_buyers_items.size
+    assert_equal 1, one_time_buyers_items.size
     assert_instance_of Item, one_time_buyers_items.sample
   end
 
