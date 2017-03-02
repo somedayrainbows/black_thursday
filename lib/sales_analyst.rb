@@ -52,7 +52,6 @@ class SalesAnalyst
   end
 
   def golden_items
-    #refactor to abstract creating the average
     all_items_unit_price = se.items.all.map do |item|
       item.unit_price
     end
