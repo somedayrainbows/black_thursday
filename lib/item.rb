@@ -1,20 +1,27 @@
-require 'bigdecimal'
-require 'time'
-require 'pry'
-
 class Item
 
-  attr_reader :name, :id, :description, :unit_price, :created_at, :updated_at, :merchant_id, :se
+  extend ClassMethods
+
+  attr_reader :name,
+              :id,
+              :description,
+              :unit_price,
+              :created_at,
+              :updated_at,
+              :merchant_id,
+              :se
 
   def initialize(params, sales_engine)
-    @name = params[:name]
+    params = Item.read_csv(params).first if params.instance_of?(String)
+
+    @se = sales_engine
     @id = params[:id].to_i
+    @name = params[:name]
     @description = params[:description]
     @unit_price = unit_price_to_dollars(params[:unit_price])
     @created_at = Time.parse(params[:created_at])
     @updated_at = Time.parse(params[:updated_at])
-    @merchant_id = params[:merchant_id].to_i # test coverage for this
-    @se = sales_engine
+    @merchant_id = params[:merchant_id].to_i
   end
 
   def unit_price_to_dollars(price)

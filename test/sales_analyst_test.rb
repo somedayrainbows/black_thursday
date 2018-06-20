@@ -1,13 +1,12 @@
-require 'minitest/autorun'
-require 'minitest/pride'
-require_relative './../lib/sales_engine'
+require_relative 'test_helper'
 require_relative './../lib/sales_analyst'
 
 class SalesAnalystTest < Minitest::Test
-  attr_reader :sa, :se
+  attr_reader :sa,
+              :se
 
   def setup
-    @se = SalesEngine.from_csv({:items => "./test/fixtures/items_truncated.csv", :merchants => "./test/fixtures/merchants_truncated.csv", :invoices => "./test/fixtures/invoices_truncated.csv"})
+    @se = $sales_engine
     @sa = SalesAnalyst.new(se)
   end
 
@@ -16,7 +15,7 @@ class SalesAnalystTest < Minitest::Test
   end
 
   def test_it_returns_average_items_per_merchant
-    assert_equal 2.55, sa.average_items_per_merchant
+    assert_equal 2.61, sa.average_items_per_merchant
   end
 
   def test_average_items_per_merchant_standard_deviation
@@ -25,7 +24,6 @@ class SalesAnalystTest < Minitest::Test
 
   def test_it_identifies_whales
     assert_equal 10, sa.merchants_with_high_item_count.length
-
     assert_includes sa.merchants_with_high_item_count, se.merchants.find_by_id(12334365)
   end
 
@@ -50,7 +48,7 @@ class SalesAnalystTest < Minitest::Test
 
   def test_it_can_calculate_standard_deviation
     collection = se.items.all.map { |item| item.unit_price }
-    assert_equal 16593068.75, sa.find_standard_deviation(collection)
+    assert_equal 16413289.92, sa.find_standard_deviation(collection)
   end
 
   def test_it_can_determine_the_standard_deviation_of_average_invoices_per_merchant
@@ -101,4 +99,66 @@ class SalesAnalystTest < Minitest::Test
     assert_equal 8.08, sa.invoice_status(:returned)
   end
 
+  def test_it_knows_which_merchant_a_customer_bought_the_most_items_from
+    customer = se.customers.find_by_id(1)
+    merchant = customer.merchants[2]
+
+    assert_equal merchant, sa.top_merchant_for_customer(1)
+  end
+
+  def test_it_knows_which_customers_only_had_one_invoice
+    one_time_buyers = sa.one_time_buyers
+
+    assert_equal 2, one_time_buyers.count
+    assert_instance_of Customer, one_time_buyers.sample
+  end
+
+  def test_it_knows_the_items_a_one_time_buyer_bought
+    one_time_buyers_items = sa.one_time_buyers_items
+
+    assert_equal 1, one_time_buyers_items.size
+    assert_instance_of Item, one_time_buyers_items.sample
+  end
+
+  def test_return_customers_that_spent_the_most
+    assert_equal 5, sa.top_buyers(5).count
+    assert_equal 20, sa.top_buyers.count
+    assert_instance_of Customer, sa.top_buyers(5).sample
+  end
+
+  def test_identifies_a_customers_highest_value_items
+    items = sa.highest_volume_items(1)
+
+    assert_equal 2, items.count
+    assert_instance_of Item, items.sample
+  end
+
+  def test_returns_invoices_with_highest_item_count
+    invoice = sa.best_invoice_by_quantity
+
+    assert_equal 32, invoice.id
+  end
+
+  def test_best_invoice_by_revenue
+    invoice = sa.best_invoice_by_revenue
+
+    assert_equal 73, invoice.id
+    assert_equal 38500.84, invoice.total
+  end
+
+  def test_it_reports_unpaid_customers
+    customers = sa.customers_with_unpaid_invoices
+
+    assert_equal 17, customers.count
+    assert_instance_of Customer, customers.sample
+  end
+
+ def test_it_returns_a_customers_purchased_items_in_a_given_year
+   assert_equal 263519844, sa.items_bought_in_year(1, 2009).first.id
+
+   assert_instance_of Item,
+    sa.items_bought_in_year(1, 2009).first
+
+   assert_equal 8, sa.items_bought_in_year(1, 2009).count
+ end
 end

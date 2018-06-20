@@ -1,8 +1,5 @@
-# refactor: move the csv reading into sales engine
-require 'pry'
 module RepositoryMethods
-  def populate_repository(path, sales_engine)
-    data = CSV.read(path, headers: true, header_converters: :symbol)
+  def populate_repository(data, sales_engine)
     data.each do |row|
       collection[row[:id].to_sym] = child.new(row, sales_engine)
     end
@@ -25,10 +22,55 @@ module RepositoryMethods
     nil
   end
 
-  def find_all_by_name(name_fragment)
+  def find_all_with_description(fragment)
+    items_matching_description = []
+    collection.each do |id, item|
+      fragment_present = item.description.downcase.include?(fragment.downcase)
+      items_matching_description << item if fragment_present
+    end
+    items_matching_description
+  end
 
+  def find_all_by_price(price)
+    items_matching_price = []
+    collection.each do |id, item|
+      items_matching_price << item if item.unit_price == price
+    end
+    items_matching_price
+  end
+
+  def find_all_by_price_in_range(range)
+      range_minimum = range.first
+      range_maximum = range.last
+      items_matching_supplied_range = []
+      collection.each do |id, item|
+        price = item.unit_price
+        price_in_range = price >= range_minimum && price <= range_maximum
+        items_matching_supplied_range << item if price_in_range
+      end
+    items_matching_supplied_range
+  end
+
+  def find_all_by_name(name_fragment)
     collection.reduce([]) do |all_matches, (id, entry)|
-      all_matches << entry if entry.name.downcase.include?(name_fragment.downcase)
+      fragment_present = entry.name.downcase.include?(name_fragment.downcase)
+      all_matches << entry if fragment_present
+      all_matches
+    end
+  end
+
+  def find_all_by_first_name(fragment)
+    collection.reduce([]) do |all_matches, (id, entry)|
+      fragment_present = entry.first_name.downcase.include?(fragment.downcase)
+      all_matches << entry if fragment_present
+      all_matches
+    end
+  end
+
+  def find_all_by_last_name(fragment)
+    collection.reduce([]) do |all_matches, (id, entry)|
+      fragment_present = entry.last_name.downcase.include?(fragment.downcase)
+      all_matches << entry if fragment_present
       all_matches
     end
   end
@@ -42,10 +84,43 @@ module RepositoryMethods
   end
 
   def find_all_by_customer_id(customer_id)
-
     collection.reduce([]) do |customer_id_matches, (id, entry)|
       customer_id_matches << entry if entry.customer_id == customer_id
       customer_id_matches
+    end
+  end
+
+  def find_all_by_credit_card_number(credit_card_number)
+    collection.select do |entry|
+      entry.credit_card_number == credit_card_number
+    end
+  end
+
+  def find_all_by_item_id(item_id)
+    collection.reduce([]) do |item_id_matches, (id, entry)|
+      item_id_matches << entry if entry.item_id == item_id
+      item_id_matches
+    end
+  end
+
+  def find_all_by_invoice_id(invoice_id)
+    collection.reduce([]) do |invoice_id_matches, (id, entry)|
+      invoice_id_matches << entry if entry.invoice_id == invoice_id
+      invoice_id_matches
+    end
+  end
+
+  def find_all_by_credit_card_number(credit_card_number)
+    collection.reduce([]) do |matches, (id, entry)|
+      matches << entry if entry.credit_card_number == credit_card_number
+      matches
+    end
+  end
+
+  def find_all_by_result(result)
+    collection.reduce([]) do |matches, (id, entry)|
+      matches << entry if entry.result == result
+      matches
     end
   end
 

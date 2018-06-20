@@ -1,51 +1,63 @@
-require 'minitest/autorun'
-require 'minitest/pride'
-
-require_relative './../lib/sales_engine'
+require_relative 'test_helper'
 
 class ItemRepositoryTest < Minitest::Test
-  attr_reader :se
+  attr_reader :item_repository
 
   def setup
-    @se = SalesEngine.from_csv({:items => "./test/fixtures/items_truncated.csv", :merchants => "./test/fixtures/merchants_truncated.csv"})
+    @item_repository = ItemRepository.from_csv('./test/fixtures/items_truncated.csv')
+  end
+
+  def test_it_exists
+    assert_instance_of ItemRepository, item_repository
   end
 
   def test_it_returns_all_known_item_instances
-    assert_equal 665, se.items.all.length
+    assert_equal 232, item_repository.all.count
   end
 
   def test_it_finds_an_item_by_id
-    assert_instance_of Item, se.items.find_by_id(263396209)
-    # returns either nil or an instance of Item with a matching ID
+    assert_equal item_repository.all.first, item_repository.find_by_id(263543344)
   end
 
   def test_it_finds_an_item_by_name
-    assert_ se.items.find_by_name("Vogue Paris Original Givenchy 2307")
-    # returns either nil or an instance of Item having done a case insensitive search
+    vogue_item = item_repository.find_by_id(263396209)
+
+    assert_equal vogue_item, item_repository.find_by_name("Vogue Paris Original Givenchy 2307")
+    refute item_repository.find_by_name("NOTANAME")
   end
 
   def test_it_finds_an_item_with_description_fragment
-    skip
-    assert_equal [], se.items.find_all_with_description("fast cars")
-    # returns either [] or instances of Item where the supplied string appears in the item description (case insensitive)
+    wizard_items = item_repository.find_all_with_description("wizard")
+
+    assert_equal 3, wizard_items.count
+    assert_instance_of Item, wizard_items.sample
+    assert_empty item_repository.find_all_with_description("BADDESCRIPTION")
   end
 
   def test_it_finds_all_items_by_supplied_price
-    skip
-    assert_equal [], se.items.find_all_by_price(14)
-    # returns either [] or instances of Item where the supplied price exactly matches
+    items = item_repository.find_all_by_price(20)
+    item = items.sample
+
+    assert_equal 12, items.count
+    assert_instance_of Item, item
+    assert_equal 20, item.unit_price
   end
 
   def test_it_finds_all_items_in_a_supplied_range
-    skip
-    assert_equal [], se.items.find_all_by_price_in_range(range)
-    # returns either [] or instances of Item where the supplied price is in the supplied range (a single Ruby range instance is passed in)
+    items_in_range = item_repository.find_all_by_price_in_range(50..60)
+    item = items_in_range.sample
+    price = item.unit_price
+
+    assert_equal 12, items_in_range.count
+    assert_instance_of Item, item
+    assert price >= 50 && price <= 60
   end
 
   def test_it_finds_all_items_by_merchant_id
-    skip
-    assert_equal [], se.items.find_all_by_merchant_id(12334105)
-    # returns either [] or instances of Item where the supplied merchant ID matches that supplied
-  end
+    items = item_repository.find_all_by_merchant_id(12334105)
+    item = items.sample
 
+    assert_equal 3, items.count
+    assert_instance_of Item, item
+  end
 end

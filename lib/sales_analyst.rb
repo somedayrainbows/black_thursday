@@ -1,15 +1,15 @@
-require 'pry'
-
 class SalesAnalyst
-  attr_reader :se, :avg_items_per_merchant, :avg_items_per_merchant_standard_deviation
+  attr_reader :se,
+              :avg_items_per_merchant,
+              :avg_items_per_merchant_std_dev
 
   def initialize(sales_engine)
     @se = sales_engine
     @avg_items_per_merchant = average_items_per_merchant
-    @avg_items_per_merchant_standard_deviation = average_items_per_merchant_standard_deviation
+    @avg_items_per_merchant_std_dev =
+      average_items_per_merchant_standard_deviation
   end
 
-  # Refactor simple count references
   def average_items_per_merchant
     (se.items.all.count.to_f / se.merchants.all.count.to_f).round(2)
   end
@@ -31,7 +31,8 @@ class SalesAnalyst
 
   def merchants_with_high_item_count
     se.merchants.all.select do |merchant|
-      merchant.items.count > avg_items_per_merchant + avg_items_per_merchant_standard_deviation
+      threshold = avg_items_per_merchant + avg_items_per_merchant_std_dev
+      merchant.items.count > threshold
     end
   end
 
@@ -51,7 +52,6 @@ class SalesAnalyst
   end
 
   def golden_items
-    #refactor to abstract creating the average
     all_items_unit_price = se.items.all.map do |item|
       item.unit_price
     end
@@ -121,9 +121,13 @@ class SalesAnalyst
   end
 
   def top_days_by_invoice_count
-    day_counts = calculate_total_daily_entries(find_entries_for_each_day(se.invoices.all))
-    days_threshold = find_average(day_counts) + find_standard_deviation(day_counts)
-    find_entries_for_each_day(se.invoices.all).reduce([]) do |top_days, (day, count)|
+    entries = find_entries_for_each_day(se.invoices.all)
+    day_counts = calculate_total_daily_entries(entries)
+    average = find_average(day_counts)
+    std_dev = find_standard_deviation(day_counts)
+    days_threshold = average + std_dev
+    entries = find_entries_for_each_day(se.invoices.all)
+    entries.reduce([]) do |top_days, (day, count)|
       top_days << day if count > days_threshold
       top_days
     end
@@ -137,4 +141,149 @@ class SalesAnalyst
     ((statuses[status] / se.invoices.all.count.to_f) * 100).round(2)
   end
 
+  def top_merchant_for_customer(customer_id)
+    customer = se.customers.find_by_id(customer_id)
+    invoices = se.invoices.all.select do |invoice|
+      invoice.customer_id == customer_id
+    end
+    invoice_items = invoices.collect do |invoice|
+      se.invoice_items.find_all_by_invoice_id(invoice.id)
+    end.flatten
+    grouped = invoice_items.group_by do |ii|
+      se.invoices.find_by_id(ii.invoice_id).merchant_id
+    end
+    purchases_count =
+      grouped.reduce(Hash.new(0)) do |hash, (merchant_id, invoice_items)|
+      hash[merchant_id] = invoice_items.reduce(0) do |total, invoice_item|
+        total += invoice_item.quantity
+      end
+      hash
+    end
+    merchant_id = purchases_count.max_by do |merchant_id, purchases_count|
+      purchases_count
+    end.first
+    se.merchants.find_by_id(merchant_id)
+  end
+
+  def one_time_buyers
+    se.customers.all.select do |customer|
+      customer.fully_paid_invoices.count == 1
+    end
+  end
+
+  def one_time_buyers_items
+    items_purchased = one_time_buyers.map do |customer|
+      customer.fully_paid_invoices.collect do |invoice|
+        invoice.items
+      end << customer.id
+    end
+
+    items = items_purchased.reduce([]) do |ary, items_and_cust_id|
+      items_and_cust_id.first.each do |item|
+        ary << [item, items_and_cust_id.last]
+      end
+      ary
+    end
+
+    items_purchase_frequency = items.reduce(Hash.new(0)) do |hash, item|
+      customer_id = item.last
+      item = item.first
+      if item
+        invoice_items = se.invoice_items.find_all_by_item_id(item.id)
+        matching_invoice_item = invoice_items.select do |invoice_item|
+          invoice = se.invoices.find_by_id(invoice_item.invoice_id)
+          invoice.customer_id == customer_id
+        end.first
+        quantity = matching_invoice_item.quantity
+
+        hash[item.id] += quantity if item
+      end
+      hash
+    end
+
+    items_purchase_frequency = items_purchase_frequency.sort_by do |key, val|
+      -val
+    end
+
+    most_purchases = items_purchase_frequency.first.last
+
+    top_items = items_purchase_frequency.select do |item_id|
+      item_id.last == most_purchases
+    end
+
+    top_items.map do |item_id|
+      se.items.find_by_id(item_id.first)
+    end
+  end
+
+  def highest_volume_items(customer_id)
+    invoices = se.invoices.find_all_by_customer_id(customer_id)
+    invoice_items = invoices.map do |invoice|
+      se.invoice_items.find_all_by_invoice_id(invoice.id)
+    end.flatten
+
+    quantity = invoice_items.max_by do |invoice_item|
+      invoice_item.quantity
+    end.quantity
+
+    invoice_items_with_highest_quantity = invoice_items.select do |invoice_item|
+      invoice_item.quantity == quantity
+    end
+
+    items = invoice_items_with_highest_quantity.map do |invoice_item|
+      item = se.items.find_by_id(invoice_item.item_id)
+      Item.new('./test/fixtures/items_truncated.csv', nil) unless item
+    end
+  end
+
+  def top_buyers(n = 20)
+    se.customers.all.sort_by do |customer|
+      invoices = se.invoices.find_all_by_customer_id(customer.id)
+      invoices.reduce(0) do  |total, invoice|
+        total += invoice.total if invoice.is_paid_in_full?
+        total
+      end
+    end.last(n).reverse
+  end
+
+  def best_invoice_by_quantity
+    invoices = se.invoices.all.select do |invoice|
+      invoice.is_paid_in_full?
+    end
+    invoices.max_by do |invoice|
+      invoice.invoice_items.reduce(0) do |total, invoice_item|
+        total += invoice_item.quantity
+      end
+    end
+  end
+
+  def best_invoice_by_revenue
+    invoices = se.invoices.all.select do |invoice|
+      invoice.is_paid_in_full?
+    end
+    invoices.max_by do |invoice|
+      invoice.total
+    end
+  end
+
+  def customers_with_unpaid_invoices
+    se.customers.all.select do |customer|
+      invoices = se.invoices.find_all_by_customer_id(customer.id)
+      !invoices.all? do |invoice|
+        invoice.is_paid_in_full?
+      end
+    end
+  end
+
+  def items_bought_in_year(customer_id, year)
+    customer_invoices = se.invoices.find_all_by_customer_id(customer_id)
+    invoices = []
+    customer_invoices.map do |invoice|
+      year_match = invoice.created_at.year == year && invoice.is_paid_in_full?
+      invoices << invoice.id if year_match
+    end
+    invoices.map do |invoice_id|
+      se.invoices.find_by_id(invoice_id).items
+    end.flatten
+  end
 end

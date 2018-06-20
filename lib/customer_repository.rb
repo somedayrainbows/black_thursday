@@ -1,6 +1,6 @@
-require_relative 'invoice'
+require_relative 'customer'
 
-class InvoiceRepository
+class CustomerRepository
 
   include RepositoryMethods
   extend ClassMethods
@@ -9,7 +9,7 @@ class InvoiceRepository
                 :child
 
   def initialize(path, sales_engine)
-    @child = Invoice
+    @child = Customer
     @collection = Hash.new
     populate_repository(path, sales_engine)
   end
