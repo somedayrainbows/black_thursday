@@ -1,7 +1,6 @@
 require 'CSV'
 require_relative './lib/sales_engine'
 
-# csv to reduce
 se = SalesEngine.from_csv({:items => "./data/items.csv",
   :merchants => "./data/merchants.csv",
   :invoices => "./data/invoices.csv",
